@@ -31,8 +31,6 @@ KorBot = koreanbots.Client(client, 'Token')
 
 @client.event
 async def on_ready():
-    activity = Activity(type=ActivityType.playing, name="'/' 슬래시로 작동")
-    await client.change_presence(status=Status.online, activity=activity)  
     print('Logged in as')
     print(client.user.name)
     print(client.user.id)
@@ -44,6 +42,21 @@ async def on_ready():
     global start_uptime
     start_uptime = time.time()
     print("Ready!")
+    while True:
+        guilds = []
+        members = []
+        for i in client.guilds:
+            guilds.append(i.name)
+            members.append(i.member_count)
+        act = ["'/' 슬래시로 작동", f"{len(guilds)}개의 서버에서 작동", f"{sum(members)}명과 함께", "도움말은 [/도움말] "]
+        for i in act:
+            if i == act[3]:
+                acttype = ActivityType.watching
+            else:
+                acttype = ActivityType.playing
+            activity = Activity(type=acttype, name=i)
+            await client.change_presence(status=Status.online, activity=activity)
+            await asyncio.sleep(3)
 
 list = []
 for guild in client.guilds:

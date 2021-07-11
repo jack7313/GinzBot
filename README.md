@@ -78,5 +78,7 @@ https://c11.kr/discordbot_edbslash
 검색 명령어
 --
 - 검색_구글
+
 - 검색_네이버
+
 - 검색_짤

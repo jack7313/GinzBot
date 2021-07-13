@@ -48,7 +48,7 @@ async def on_ready():
         for i in client.guilds:
             guilds.append(i.name)
             members.append(i.member_count)
-        act = ["'/' 슬래시로 작동", f"{len(guilds)}개의 서버에서 작동", f"{sum(members)}명과 함께", "도움말은 [/도움말]", "버그 제보는 [/건의]"]
+        act = ["'/' 슬래시로 작동", f"{len(guilds)}개의 서버에서 ", f"{sum(members)}명과 함께", "도움말은 [/도움말]", "버그 제보는 [/건의]"]
         for i in act:
             if i == act[3]:
                 acttype = ActivityType.watching

@@ -2,7 +2,7 @@ import asyncio
 import os
 from re import T
 from typing import List
-from discord import Client, Intents, Activity, ActivityType, Status, Embed, __version__
+from discord import Client, Intents, Activity, ActivityType, Status, Embed, __version_
 import discord
 from discord_components import component
 from discord_slash import SlashCommand

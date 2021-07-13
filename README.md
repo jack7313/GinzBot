@@ -82,3 +82,8 @@ https://c11.kr/discordbot_edbslash
 - 검색_네이버
 
 - 검색_짤
+
+
+기타 명령어
+--
+- 건의

@@ -1,5 +1,6 @@
 import asyncio
 import os
+from re import T
 from typing import List
 from discord import Client, Intents, Activity, ActivityType, Status, Embed, __version__
 import discord
@@ -28,7 +29,6 @@ client = Client(intents=Intents.all())
 slash = SlashCommand(client, sync_commands=True)
 KorBot = koreanbots.Client(client, 'Token')
 
-
 @client.event
 async def on_ready():
     print('Logged in as')
@@ -48,9 +48,11 @@ async def on_ready():
         for i in client.guilds:
             guilds.append(i.name)
             members.append(i.member_count)
-        act = ["'/' 슬래시로 작동", f"{len(guilds)}개의 서버에서 작동", f"{sum(members)}명과 함께", "도움말은 [/도움말] "]
+        act = ["'/' 슬래시로 작동", f"{len(guilds)}개의 서버에서 작동", f"{sum(members)}명과 함께", "도움말은 [/도움말]", "버그 제보는 [/건의]"]
         for i in act:
             if i == act[3]:
+                acttype = ActivityType.watching
+            elif i == act[4]:
                 acttype = ActivityType.watching
             else:
                 acttype = ActivityType.playing
@@ -98,15 +100,16 @@ async def nowtime(ctx):
                     name="유저",
                     description="정보를 불러올 유저를 선택하세요.",
                     option_type=6,
-                    required=False)])
-async def userinfo(ctx, 유저: str):
-    유저_ID = 유저.id
-    date = datetime.datetime.utcfromtimestamp(((유저_ID >> 22) + 1420070400000) / 1000)
-    embed=Embed(title="유저 정보", description=f"{유저.name}님의 정보", colour=0x0067a3)
-    embed.set_author(name=유저,icon_url=유저.avatar_url)
-    embed.set_thumbnail(url=유저.avatar_url)
-    embed.add_field(name="닉네임", value=유저.name, inline=True)
-    embed.add_field(name="사용자 ID", value=유저_ID, inline=True)
+                    required=True)])
+async def userinfo(ctx, 유저: int):
+    유저 = int(유저)
+    유저닉네임 = client.get_user(유저)
+    date = datetime.datetime.utcfromtimestamp(((유저 >> 22) + 1420070400000) / 1000)
+    embed=Embed(title="유저 정보", description=f"{유저닉네임.name}님의 정보", colour=0x0067a3)
+    embed.set_author(name=유저닉네임,icon_url=유저닉네임.avatar_url)
+    embed.set_thumbnail(url=유저닉네임.avatar_url)
+    embed.add_field(name="닉네임", value=유저닉네임.name, inline=True)
+    embed.add_field(name="사용자 ID", value=유저닉네임, inline=True)
     embed.add_field(name="디스코드 가입일", value=f"{date.year}년 {date.month}월 {date.day}일", inline=True)
     await ctx.send(embed=embed)
 
@@ -130,7 +133,7 @@ async def guildinfo(ctx):
                     name="방법",
                     description="복불복 방법을 선택하세요.",
                     option_type=3,
-                    required=False,
+                    required=True,
                     choices=[
                         create_choice(
                             name="동전 뒤집기",
@@ -192,12 +195,12 @@ async def uptime(ctx):
                     name="유저",
                     description="킥할 유저를 선택하세요.",
                     option_type=6,
-                    required=False),
+                    required=True),
                 create_option(
                     name="사유",
                     description="킥하는 이유를 입력하세요.",
                     option_type=3,
-                    required=False)])
+                    required=True)])
 async def kick(ctx, 유저: str, 사유: str):
     if ctx.author.guild_permissions.manage_guild:
         embed = Embed(title="킥",description=f"`{사유}`의 이유로 {유저.name}님을 킥했습니다.",colour=0xff0000)
@@ -214,12 +217,12 @@ async def kick(ctx, 유저: str, 사유: str):
                     name="유저",
                     description="밴할 유저를 선택하세요.",
                     option_type=6,
-                    required=False),
+                    required=True),
                 create_option(
                     name="사유",
                     description="밴하는 이유를 입력하세요.",
                     option_type=3,
-                    required=False)])
+                    required=True)])
 async def ban(ctx, 유저: str, 사유: str):
     if ctx.author.guild_permissions.manage_guild:
         embed = Embed(title="밴",description=f"`{사유}`의 이유로 {유저.name}님을 밴했습니다.",colour=0xff0000)
@@ -236,12 +239,12 @@ async def ban(ctx, 유저: str, 사유: str):
                     name="유저",
                     description="뮤트할 유저를 선택하세요.",
                     option_type=6,
-                    required=False),
+                    required=True),
                 create_option(
                     name="사유",
                     description="뮤트하는 이유를 입력하세요.",
                     option_type=3,
-                    required=False)])
+                    required=True)])
 async def mute(ctx, 유저: str, 사유: str):
     if ctx.author.guild_permissions.manage_channels:
         embed = Embed(title="뮤트",description=f"`{사유}`의 이유로 {유저.name}님을 뮤트했습니다.",colour=0xff0000)
@@ -258,7 +261,7 @@ async def mute(ctx, 유저: str, 사유: str):
                     name="유저",
                     description="언뮤트할 유저를 선택하세요.",
                     option_type=6,
-                    required=False)])
+                    required=True)])
 async def unmute(ctx, 유저: str):
     if ctx.author.guild_permissions.manage_guilds:
         embed = Embed(title="언뮤트",description=f"{유저.name}님의 뮤트를 해제했습니다.",colour=0xff0000)
@@ -275,7 +278,7 @@ async def unmute(ctx, 유저: str):
                     name="언어",
                     description="언어를 선택하세요.",
                     option_type=3,
-                    required=False,
+                    required=True,
                     choices=[
                         create_choice(
                             name="한국어 -> 영어",
@@ -300,7 +303,7 @@ async def unmute(ctx, 유저: str):
                     name="내용",
                     description="번역할 내용을 입력하세요.",
                     option_type=3,
-                    required=False
+                    required=True
                 )])
 async def translate(ctx, 언어: str, 내용: str):
     if 언어 == "ko-en":
@@ -615,12 +618,12 @@ async def botinfo(ctx):
                     name="제목",
                     description="타이머의 제목을 입력하세요.",
                     option_type=3,
-                    required=False),
+                    required=True),
                 create_option(
                     name="시간",
                     description="타이머 시간(초)을 입력하세요. (중간에 봇이 꺼지면 타이머가 취소됩니다.)",
                     option_type=4,
-                    required=False)
+                    required=True)
             ])
 async def timer(ctx, 제목: str, 시간: int):
     embed = Embed(title=f":timer: {제목}", description=f"{시간}초 타이머를 시작합니다.", colour=0x0067a3)
@@ -636,7 +639,7 @@ async def timer(ctx, 제목: str, 시간: int):
                     name="내용",
                     description="검색할 내용을 입력하세요.",
                     option_type=3,
-                    required=False
+                    required=True
                 )])
 async def googlesearch(ctx, 내용: str):
     my_api_key = "AIzaSyAAyGxc_d5EV4KE65uRzPxSY3jsg_WLZjc"
@@ -674,13 +677,13 @@ async def googlesearch(ctx, 내용: str):
                     name="내용",
                     description="검색할 내용을 입력하세요.",
                     option_type=3,
-                    required=False
+                    required=True
                 ),
                 create_option(
                     name="종류",
                     description="검색할 종류를 선택하세요.",
                     option_type=3,
-                    required=False,
+                    required=True,
                     choices=[
                         create_choice(
                             name="블로그",
@@ -767,22 +770,22 @@ async def naversearch(ctx, 내용: str, 종류: int):
                     name="제목",
                     description="저장할 정보의 제목을 입력하세요.",
                     option_type=3,
-                    required=False),
+                    required=True),
                 create_option(
                     name="내용",
                     description="저장할 정보의 내용을 입력하세요.",
                     option_type=3,
-                    required=False),
+                    required=True),
                 create_option(
                     name="비밀번호",
                     description="저장할 정보의 비밀번호를 입력하세요.",
                     option_type=4,
-                    required=False),
+                    required=True),
                 create_option(
                     name="공개_여부",
                     description="정보의 공개 여부를 선택하세요.",
                     option_type=3,
-                    required=False,
+                    required=True,
                     choices=[
                         create_choice(
                             name="공개",
@@ -823,7 +826,7 @@ async def saveinfo(ctx, 제목: str, 내용: str, 비밀번호: int, 공개_여�
                     name="비밀번호",
                     description="저장한 정보의 비밀번호를 입력하세요.",
                     option_type=4,
-                    required=False)])
+                    required=True)])
 async def loadinfo(ctx, 비밀번호: int):
     with open('info.json','r',encoding='utf-8') as f:
         info = json.load(f)
@@ -848,7 +851,7 @@ async def loadinfo(ctx, 비밀번호: int):
                     name="비밀번호",
                     description="저장한 정보의 비밀번호를 입력하세요.",
                     option_type=4,
-                    required=False)])
+                    required=True)])
 async def deleteinfo(ctx, 비밀번호: int):
     with open('info.json','r', encoding='UTF8') as f:
         info = json.load(f)
@@ -894,7 +897,7 @@ async def select(ctx):
                     name="내용",
                     description="검색할 짤의 내용을 입력하세요.",
                     option_type=3,
-                    required=False)])
+                    required=True)])
 async def tenorgif(ctx, 내용: str):
     apikey = "D8K93KK1HF3U"  # test value
     lmt = 10
@@ -989,8 +992,57 @@ async def help(ctx):
     embed5.add_field(name="검색_네이버", value="네이버에서 검색할 내용을 검색합니다.\n블로그, 뉴스, 책, 백과사전, 영화, 카페글, 지식IN, 지역, 쇼핑 중 하나로 검색할 수 있습니다.\n검색 결과 중 5개만 표시됩니다.", inline=False)
     embed5.add_field(name="검색_짤", value="Tenor에서 짤을 검색합니다.\n검색된 짤 중 10개만 표시됩니다.", inline=False)
 
+    embed6.add_field(name="건의", value="봇의 버그나 필요한 기능을 건의합니다.\n건의가 관리자에게 전송됩니다.\n버그는 최대 일주일 이내로 고쳐집니다.\n버그가 수정됐거나 필요한 기능이 추가되면 건의자의 DM으로 처리되었다는 메시지가 보내집니다.")
     embed6.add_field(name="select", value="디스코드 API 신기술인 셀렉트에 대한 테스트 명령어입니다.", inline=False)
     
     await Paginator(bot=client, ctx=ctx, pages=[embed1, embed2, embed3, embed4, embed5, embed6])
 
-client.run('Token')
+@slash.slash(name="건의",
+            description="봇의 버그나 필요한 기능을 건의합니다.",
+            options=[
+                create_option(
+                    name="종류",
+                    description="건의할 종류를 선택하세요.",
+                    option_type=3,
+                    required=True,
+                    choices=[
+                        create_choice(
+                            name="버그",
+                            value="bug"),
+                        create_choice(
+                            name="필요한 기능",
+                            value="required")]),
+                create_option(
+                    name="내용",
+                    description="건의할 내용을 입력하세요.",
+                    option_type=3,
+                    required=True)])
+async def suggest(ctx, 종류: str, 내용: str):
+    if 종류 == "bug":
+        type = "버그"
+    else:
+        type = "필요한 기능"
+    SUGGEST = {"type": 종류, "content": 내용, "suggestor": f"{ctx.author}", "suggestorid": f"{ctx.author.id}"}
+    with open('suggest.json','r', encoding='UTF8') as f:
+        suggest = json.load(f)
+        suggest[str(datetime.datetime.now())] = SUGGEST
+        with open('suggest.json','w',encoding='utf-8') as mk_f:
+            json.dump(suggest,mk_f,indent='\t', ensure_ascii=False)
+            embed = Embed(title="성공적으로 건의가 등록됐습니다.", color=0x008000)
+            await ctx.send(embed=embed, hidden=True)
+            embed = Embed(title=type, description=내용, color=0x0067a3)
+            embed.set_footer(text=f"{ctx.author.name}님의 건의", icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed, hidden=True)
+            print("==========")
+            print(f"{ctx.author}님의 건의:")
+            print(f"[{type}] {내용}")
+            print(datetime.datetime.now())
+            print("==========")
+            edm = client.get_user(755775043426058340)
+            embed = Embed(title="새로운 건의가 등록되었습니다.", color=0x008000)
+            await edm.send(embed=embed)
+            embed = Embed(title=type, description=내용, color=0x0067a3)
+            embed.set_footer(text=f"{ctx.author.name}님의 건의", icon_url=ctx.author.avatar_url)
+            await edm.send(embed=embed)
+
+client.run("Token")

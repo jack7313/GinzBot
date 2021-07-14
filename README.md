@@ -89,4 +89,3 @@ https://c11.kr/discordbot_edbslash
 기타 명령어
 --
 - 건의
-- ㅁ

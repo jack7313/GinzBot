@@ -57,6 +57,8 @@ https://c11.kr/discordbot_edbslash
 
 - 언뮤트
 
+- 삭제
+
 정보 명령어
 --
 - 유저정보

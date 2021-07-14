@@ -1044,5 +1044,22 @@ async def suggest(ctx, 종류: str, 내용: str):
             embed = Embed(title=type, description=내용, color=0x0067a3)
             embed.set_footer(text=f"{ctx.author.name}님의 건의", icon_url=ctx.author.avatar_url)
             await edm.send(embed=embed)
+            
+@slash.slash(name="삭제",
+            description="메시지를 삭제합니다.",
+            options=[
+                create_option(
+                    name="개수",
+                    description="삭제할 메시지의 개수를 입력하세요.",
+                    option_type=4,
+                    required=True)])
+async def clear(ctx, 개수: int):
+    if ctx.author.guild_permissions.manage_channels:
+        await ctx.channel.purge(limit=개수)
+        embed = Embed(title=f"{개수}개의 메시지를 삭제했습니다.",colour=0xff0000)
+        await ctx.send(embed=embed)
+    else:
+        embed = Embed(title=f"{ctx.author.name}님은 권한이 없습니다.",colour=0xff0000)
+        await ctx.send(embed=embed, hidden=True)
 
 client.run("Token")

@@ -626,11 +626,15 @@ async def botinfo(ctx):
                     required=True)
             ])
 async def timer(ctx, 제목: str, 시간: int):
-    embed = Embed(title=f":timer: {제목}", description=f"{시간}초 타이머를 시작합니다.", colour=0x0067a3)
-    timer = await ctx.send(embed=embed)
-    await asyncio.sleep(시간)
-    embed = Embed(title=f":timer: {제목}", description=f"{시간}초 타이머가 끝났습니다.", colour=0xff0000)
-    await timer.reply(ctx.author.mention, embed=embed)
+    if 시간 < 0:
+        embed = Embed(title="시간을 자연수로 입력해주세요.", colour=0xff0000)
+        await ctx.send(embed=embed, hidden=True)
+    else:
+        embed = Embed(title=f":timer: {제목}", description=f"{시간}초 타이머를 시작합니다.", colour=0x0067a3)
+        timer = await ctx.send(embed=embed)
+        await asyncio.sleep(시간)
+        embed = Embed(title=f":timer: {제목}", description=f"{시간}초 타이머가 끝났습니다.", colour=0xff0000)
+        await timer.reply(ctx.author.mention, embed=embed)
 
 @slash.slash(name="검색_구글",
             description="구글에서 검색할 내용을 검색합니다.",

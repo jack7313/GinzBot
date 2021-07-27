@@ -3,6 +3,10 @@
 </p>
 
 <p align="center">
+<img src="https://api.koreanbots.dev/widget/bots/servers/837530519892787270.svg" title="서버 수" alt="ㅁㄴㅇㄹ"> <img src="https://api.koreanbots.dev/widget/bots/votes/837530519892787270.svg" title="하트 수" alt="ㅁㄴㅇㄹ">
+</p>
+
+<p align="center">
 <b>Slash_ED봇</b>
 </p>
 </img></center>
@@ -58,6 +62,10 @@ https://c11.kr/discordbot_edbslash
 - 언뮤트
 
 - 삭제
+
+- 역할부여
+
+- 역할해제
 
 정보 명령어
 --

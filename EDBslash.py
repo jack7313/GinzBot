@@ -37,8 +37,10 @@ async def on_ready():
     print(__version__)
     print('------')
     print('Servers connected to:')
+    guildslen = []
     for guild in client.guilds:
-        print(f'{guild.name}: {guild.id}')
+        guildslen.append(guild)
+    print(f"[{len(guildslen)}개의 서버]")
     global start_uptime
     start_uptime = time.time()
     print("Ready!")
@@ -982,6 +984,8 @@ async def help(ctx):
     embed1.add_field(name="밴", value="유저를 밴합니다.\n이때 밴된 유저는 관리자가 차단 목록에서 빼지 않는 이상 다시 들어올 수 없습니다.", inline=False)
     embed1.add_field(name="뮤트", value="유저를 뮤트합니다.\n`/언뮤트` 명령어를 사용해 유저를 언뮤트할 수 있습니다.", inline=False)
     embed1.add_field(name="언뮤트", value="유저를 언뮤트합니다.\n`/뮤트` 명령어로 다시 유저를 뮤트할 수 있습니다.", inline=False)
+    embed2.add_field(name="역할부여", value="유저에게 역할을 부여합니다.\n`/역할해제` 명령어로 다시 해제할 수 있습니다.", inline=False)
+    embed2.add_field(name="역할해제", value="유저의 역할을 해제합니다.\n`/역할부여` 명령어로 다시 역할을 부여할 수 있습니다.", inline=False)
 
     embed2.add_field(name="유저정보", value="유저의 정보를 불러옵니다.\n유저의 닉네임, 아이콘, ID, 디스코드 가입일을 불러옵니다.", inline=False)
     embed2.add_field(name="서버정보", value="이 서버의 정보를 불러옵니다.\n서버의 이름, 아이콘, ID, 생성일, 주인, 멤버 수를 불러옵니다.", inline=False)
@@ -1062,6 +1066,50 @@ async def clear(ctx, 개수: int):
         await ctx.channel.purge(limit=개수)
         embed = Embed(title=f"{개수}개의 메시지를 삭제했습니다.",colour=0xff0000)
         await ctx.send(embed=embed)
+    else:
+        embed = Embed(title=f"{ctx.author.name}님은 권한이 없습니다.",colour=0xff0000)
+        await ctx.send(embed=embed, hidden=True)
+        
+@slash.slash(name="역할부여",
+            description="유저에게 역할을 부여합니다.",
+            options=[
+                create_option(
+                    name="유저",
+                    description="역할을 부여할 유저를 선택하세요.",
+                    option_type=6,
+                    required=True),
+                create_option(
+                    name="역할",
+                    description="유저에게 부여할 역할을 선택하세요.",
+                    option_type=8,
+                    required=True)])
+async def role(ctx, 유저: str, 역할: str):
+    if ctx.author.guild_permissions.manage_guild:
+        embed = Embed(title=f"{유저.name}님에게 `{역할.name}` 역할을 부여했습니다.", colour=0x008000)
+        await ctx.send(embed=embed)
+        await 유저.add_roles(역할)
+    else:
+        embed = Embed(title=f"{ctx.author.name}님은 권한이 없습니다.",colour=0xff0000)
+        await ctx.send(embed=embed, hidden=True)
+
+@slash.slash(name="역할해제",
+            description="유저의 역할을 해제합니다.",
+            options=[
+                create_option(
+                    name="유저",
+                    description="역할을 해제할 유저를 선택하세요.",
+                    option_type=6,
+                    required=True),
+                create_option(
+                    name="역할",
+                    description="유저에게 해제할 역할을 선택하세요.",
+                    option_type=8,
+                    required=True)])
+async def role(ctx, 유저: str, 역할: str):
+    if ctx.author.guild_permissions.manage_guild:
+        embed = Embed(title=f"{유저.name}님의 `{역할.name}` 역할을 해제했습니다.", colour=0x008000)
+        await ctx.send(embed=embed)
+        await 유저.remove_roles(역할)
     else:
         embed = Embed(title=f"{ctx.author.name}님은 권한이 없습니다.",colour=0xff0000)
         await ctx.send(embed=embed, hidden=True)

@@ -985,8 +985,8 @@ async def help(ctx):
     embed1.add_field(name="뮤트", value="유저를 뮤트합니다.\n`/언뮤트` 명령어를 사용해 유저를 언뮤트할 수 있습니다.", inline=False)
     embed1.add_field(name="언뮤트", value="유저를 언뮤트합니다.\n`/뮤트` 명령어로 다시 유저를 뮤트할 수 있습니다.", inline=False)
     embed1.add_field(name="삭제", value="메시지를 삭제합니다.\n입력한 개수만큼 메시지가 삭제됩니다.", inline=False)
-    embed2.add_field(name="역할부여", value="유저에게 역할을 부여합니다.\n`/역할해제` 명령어로 다시 해제할 수 있습니다.", inline=False)
-    embed2.add_field(name="역할해제", value="유저의 역할을 해제합니다.\n`/역할부여` 명령어로 다시 역할을 부여할 수 있습니다.", inline=False)
+    embed1.add_field(name="역할부여", value="유저에게 역할을 부여합니다.\n`/역할해제` 명령어로 다시 해제할 수 있습니다.", inline=False)
+    embed1.add_field(name="역할해제", value="유저의 역할을 해제합니다.\n`/역할부여` 명령어로 다시 역할을 부여할 수 있습니다.", inline=False)
 
     embed2.add_field(name="유저정보", value="유저의 정보를 불러옵니다.\n유저의 닉네임, 아이콘, ID, 디스코드 가입일을 불러옵니다.", inline=False)
     embed2.add_field(name="서버정보", value="이 서버의 정보를 불러옵니다.\n서버의 이름, 아이콘, ID, 생성일, 주인, 멤버 수를 불러옵니다.", inline=False)

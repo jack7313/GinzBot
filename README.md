@@ -27,7 +27,7 @@
 초대 링크
 ==
 
-https://c11.kr/discordbot_edbslash
+https://c11.kr/n_discordbot_edbslash
 
 
 개발자

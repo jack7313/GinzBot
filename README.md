@@ -67,6 +67,10 @@ https://c11.kr/n_discordbot_edbslash
 
 - 역할해제
 
+게임 명령어
+--
+- 게임
+
 정보 명령어
 --
 - 유저정보

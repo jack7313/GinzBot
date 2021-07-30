@@ -1,10 +1,6 @@
 import asyncio
-import os
-from re import T
-from typing import List
-from discord import Client, Intents, Activity, ActivityType, Status, Embed, __version__
+from discord import Client, Intents, Activity, ActivityType, Status, Embed, __version__, ChannelType
 import discord
-from discord_components import component
 from discord_slash import SlashCommand
 from discord_slash.utils.manage_commands import create_option, create_choice
 from discord_slash.utils.manage_components import create_button, create_actionrow, create_select, create_select_option, wait_for_component, ComponentContext
@@ -16,18 +12,17 @@ from urllib.request import urlopen, Request
 from urllib.request import HTTPError
 from urllib.parse import quote
 import json
-import math
-from discord.ext import commands
 from googleapiclient.discovery import build
-import sys
 import urllib.request
 from SlashPaginator import Paginator
 import requests
 import koreanbots
+from discordTogether import DiscordTogether, errors
 
 client = Client(intents=Intents.all())
 slash = SlashCommand(client, sync_commands=True)
-KorBot = koreanbots.Client(client, 'Token')
+KorBot = koreanbots.Client(client, 'token')
+togetherControl = DiscordTogether(client)
 
 @client.event
 async def on_ready():
@@ -968,6 +963,7 @@ async def tenorgif(ctx, 내용: str):
 async def help(ctx):
     embed = Embed(title="도움말", description="기본 명령어", color=0x0067a3)
     embed1 = Embed(title="도움말", description="관리 명령어", color=0x0067a3)
+    embed7 = Embed(title="도움말", description="게임 명령어", color=0x0067a3)
     embed2 = Embed(title="도움말", description="정보 명령어", color=0x0067a3)
     embed3 = Embed(title="도움말", description="정보(저장) 명령어", color=0x0067a3)
     embed4 = Embed(title="도움말", description="번역 명령어", color=0x0067a3)
@@ -987,6 +983,8 @@ async def help(ctx):
     embed1.add_field(name="삭제", value="메시지를 삭제합니다.\n입력한 개수만큼 메시지가 삭제됩니다.", inline=False)
     embed1.add_field(name="역할부여", value="유저에게 역할을 부여합니다.\n`/역할해제` 명령어로 다시 해제할 수 있습니다.", inline=False)
     embed1.add_field(name="역할해제", value="유저의 역할을 해제합니다.\n`/역할부여` 명령어로 다시 역할을 부여할 수 있습니다.", inline=False)
+    
+    embed7.add_field(name="게임", value="음성 채널에서 게임(활동)을 합니다.\n유튜브 시청, 추리 게임, 낚시 게임, 체스 게임에서 선택할 수 있습니다.\n음성 채널을 선택하지 않으면 오류가 발생합니다.\n(꼭 음성 채널을 선택해주세요!)\n오류는 https://docs.discord-together.ml/docs/errors 를 참고해주세요.\n그 외 오류는 `/건의` 명령어를 사용해주세요.")
 
     embed2.add_field(name="유저정보", value="유저의 정보를 불러옵니다.\n유저의 닉네임, 아이콘, ID, 디스코드 가입일을 불러옵니다.", inline=False)
     embed2.add_field(name="서버정보", value="이 서버의 정보를 불러옵니다.\n서버의 이름, 아이콘, ID, 생성일, 주인, 멤버 수를 불러옵니다.", inline=False)
@@ -1004,7 +1002,7 @@ async def help(ctx):
     embed6.add_field(name="건의", value="봇의 버그나 필요한 기능을 건의합니다.\n건의가 관리자에게 전송됩니다.\n버그는 최대 일주일 이내로 고쳐집니다.\n버그가 수정됐거나 필요한 기능이 추가되면 건의자의 DM으로 처리되었다는 메시지가 보내집니다.")
     embed6.add_field(name="select", value="디스코드 API 신기술인 셀렉트에 대한 테스트 명령어입니다.", inline=False)
     
-    await Paginator(bot=client, ctx=ctx, pages=[embed1, embed2, embed3, embed4, embed5, embed6])
+    await Paginator(bot=client, ctx=ctx, pages=[embed, embed1, embed7, embed2, embed3, embed4, embed5, embed6])
 
 @slash.slash(name="건의",
             description="봇의 버그나 필요한 기능을 건의합니다.",
@@ -1084,7 +1082,7 @@ async def clear(ctx, 개수: int):
                     description="유저에게 부여할 역할을 선택하세요.",
                     option_type=8,
                     required=True)])
-async def role(ctx, 유저: str, 역할: str):
+async def giverole(ctx, 유저: str, 역할: str):
     if ctx.author.guild_permissions.manage_guild:
         embed = Embed(title=f"{유저.name}님에게 `{역할.name}` 역할을 부여했습니다.", colour=0x008000)
         await ctx.send(embed=embed)
@@ -1106,7 +1104,7 @@ async def role(ctx, 유저: str, 역할: str):
                     description="유저에게 해제할 역할을 선택하세요.",
                     option_type=8,
                     required=True)])
-async def role(ctx, 유저: str, 역할: str):
+async def receiverole(ctx, 유저: str, 역할: str):
     if ctx.author.guild_permissions.manage_guild:
         embed = Embed(title=f"{유저.name}님의 `{역할.name}` 역할을 해제했습니다.", colour=0x008000)
         await ctx.send(embed=embed)
@@ -1114,5 +1112,57 @@ async def role(ctx, 유저: str, 역할: str):
     else:
         embed = Embed(title=f"{ctx.author.name}님은 권한이 없습니다.",colour=0xff0000)
         await ctx.send(embed=embed, hidden=True)
+
+@slash.slash(name="게임",
+            description="음성 채널에서 게임(활동)을 합니다.",
+            options=[
+                create_option(
+                    name="채널",
+                    description="게임(활동)을 할 음성 채널을 선택하세요.",
+                    option_type=7,
+                    required=True),
+                create_option(
+                    name="활동",
+                    description="음성 채널에서 할 활동을 선택하세요.",
+                    option_type=3,
+                    required=True,
+                    choices=[
+                        create_choice(
+                            name="YouTube Together",
+                            value="youtube"),
+                        create_choice(
+                            name="Betrayal.io",
+                            value="betrayal"),
+                        create_choice(
+                            name="Fishington.io",
+                            value="fishing"),
+                        create_choice(
+                            name="Chess in the Park",
+                            value="chess")])])
+async def gameactivity(ctx, 채널: int, 활동: str):
+    if 활동 == "youtube":
+        icon = "https://cdn.discordapp.com/attachments/849872302707441694/870542147781296158/b099b4395fab6da6.png"
+        name = "Youtube Together"
+        desc = "유튜브를 시청하세요!"
+    elif 활동 == "betrayal":
+        icon = "https://cdn.discordapp.com/attachments/849872302707441694/870543023656828988/icon.png"
+        name = "Betrayal.io"
+        desc = "추리 게임을 플레이하세요!"
+    elif 활동 == "fishing":
+        icon = "https://cdn.discordapp.com/attachments/849872302707441694/870543484040409138/fishington-io-game37.png"
+        name = "Fishington.io"
+        desc = "낚시 게임을 플레이하세요!"
+    elif 활동 == "chess":
+        icon = "https://cdn.discordapp.com/attachments/849872302707441694/870569799116288001/dfdfdsfsasdf.png"
+        name = "Chess in the Park"
+        desc = "체스 게임을 플레이하세요!"
+    link = await togetherControl.create_link(채널.id, 활동)
+    embed = Embed(title=name, description=f"https://{link.short_link}\n위 링크로 들어가 {desc}", color=0x0067a3)
+    embed.set_thumbnail(url=icon)
+    embed.set_footer(text="DiscordTogether 모듈을 사용합니다.",icon_url="https://i.ibb.co/nCr7dnf/DT-Logo-New.png")
+    if 채널.type == ChannelType.voice:
+        await ctx.send(embed=embed)
+    else:
+        await ctx.send(embed=Embed(title="선택한 채널이 음성 채널이 아닙니다.", colour=0xff0000))
 
 client.run("Token")

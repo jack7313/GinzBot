@@ -1147,15 +1147,15 @@ async def gameactivity(ctx, 채널: int, 활동: str):
     elif 활동 == "betrayal":
         icon = "https://cdn.discordapp.com/attachments/849872302707441694/870543023656828988/icon.png"
         name = "Betrayal.io"
-        desc = "추리 게임을 플레이하세요!"
+        desc = "Betrayal.io를 플레이하세요!"
     elif 활동 == "fishing":
         icon = "https://cdn.discordapp.com/attachments/849872302707441694/870543484040409138/fishington-io-game37.png"
         name = "Fishington.io"
-        desc = "낚시 게임을 플레이하세요!"
+        desc = "Fishington.io를 플레이하세요!"
     elif 활동 == "chess":
         icon = "https://cdn.discordapp.com/attachments/849872302707441694/870569799116288001/dfdfdsfsasdf.png"
         name = "Chess in the Park"
-        desc = "체스 게임을 플레이하세요!"
+        desc = "Chess in the Park를 플레이하세요!"
     link = await togetherControl.create_link(채널.id, 활동)
     embed = Embed(title=name, description=f"https://{link.short_link}\n위 링크로 들어가 {desc}", color=0x0067a3)
     embed.set_thumbnail(url=icon)

@@ -99,14 +99,12 @@ async def nowtime(ctx):
                     option_type=6,
                     required=True)])
 async def userinfo(ctx, 유저: int):
-    유저 = int(유저)
-    유저닉네임 = client.get_user(유저)
-    date = datetime.datetime.utcfromtimestamp(((유저 >> 22) + 1420070400000) / 1000)
-    embed=Embed(title="유저 정보", description=f"{유저닉네임.name}님의 정보", colour=0x0067a3)
-    embed.set_author(name=유저닉네임,icon_url=유저닉네임.avatar_url)
-    embed.set_thumbnail(url=유저닉네임.avatar_url)
-    embed.add_field(name="닉네임", value=유저닉네임.name, inline=True)
-    embed.add_field(name="사용자 ID", value=유저닉네임, inline=True)
+    date = datetime.datetime.utcfromtimestamp(((유저.id >> 22) + 1420070400000) / 1000)
+    embed=Embed(title="유저 정보", description=f"{유저.name}님의 정보", colour=0x0067a3)
+    embed.set_author(name=유저,icon_url=유저.avatar_url)
+    embed.set_thumbnail(url=유저.avatar_url)
+    embed.add_field(name="닉네임", value=유저.name, inline=True)
+    embed.add_field(name="ID", value=유저.id, inline=True)
     embed.add_field(name="디스코드 가입일", value=f"{date.year}년 {date.month}월 {date.day}일", inline=True)
     await ctx.send(embed=embed)
 
@@ -117,7 +115,7 @@ async def guildinfo(ctx):
     embed.set_author(name=ctx.guild,icon_url=ctx.guild.icon_url)
     embed.set_thumbnail(url=ctx.guild.icon_url)
     embed.add_field(name="이름", value=ctx.guild, inline=True)
-    embed.add_field(name="서버 ID", value=ctx.guild.id, inline=True)
+    embed.add_field(name="ID", value=ctx.guild.id, inline=True)
     embed.add_field(name="생성일", value=ctx.guild.created_at, inline=True)
     embed.add_field(name="주인", value=ctx.guild.owner, inline=True)
     embed.add_field(name="멤버 수", value=ctx.guild.member_count, inline=True)
@@ -244,11 +242,11 @@ async def ban(ctx, 유저: str, 사유: str):
                     required=True)])
 async def mute(ctx, 유저: str, 사유: str):
     if ctx.author.guild_permissions.manage_channels:
-        embed = Embed(title="뮤트",description=f"`{사유}`의 이유로 {유저.name}님을 뮤트했습니다.",colour=0xff0000)
+        embed = Embed(title=f"`{사유}`의 이유로 {유저.name}님을 뮤트했습니다.",colour=0xff0000)
         await ctx.send(embed=embed)
         await ctx.channel.set_permissions(유저, send_messages=False)
     else:
-        embed = Embed(title=":warning: 권한 없음",description=f"{ctx.author.name}님은 권한이 없습니다.",colour=0xff0000)
+        embed = Embed(title=f"{ctx.author.name}님은 권한이 없습니다.",colour=0xff0000)
         await ctx.send(embed=embed, hidden=True)
 
 @slash.slash(name="언뮤트",
@@ -260,12 +258,12 @@ async def mute(ctx, 유저: str, 사유: str):
                     option_type=6,
                     required=True)])
 async def unmute(ctx, 유저: str):
-    if ctx.author.guild_permissions.manage_guilds:
-        embed = Embed(title="언뮤트",description=f"{유저.name}님의 뮤트를 해제했습니다.",colour=0xff0000)
+    if ctx.author.guild_permissions.manage_channels:
+        embed = Embed(title=f"{유저.name}님의 뮤트를 해제했습니다.",colour=0xff0000)
         await ctx.send(embed=embed)
-        await ctx.guild.set_permissions(유저, send_messages=None)
+        await ctx.channel.set_permissions(유저, send_messages=None)
     else:
-        embed = Embed(title=":warning: 권한 없음",description=f"{ctx.author.name}님은 권한이 없습니다.",colour=0xff0000)
+        embed = Embed(title=f"{ctx.author.name}님은 권한이 없습니다.",colour=0xff0000)
         await ctx.send(embed=embed, hidden=True)
 
 @slash.slash(name="번역",
@@ -604,7 +602,7 @@ async def botinfo(ctx):
     embed.add_field(name="기능", value="`/도움말`을 참고해주세요.", inline=True) 
     embed.add_field(name="탄생일", value=f"**{date.year}**년 **{date.month}**월 **{date.day}**일", inline=True)
     embed.add_field(name="가입된 서버 수", value=f"{len(list)}개\n({sum(list1)}명)", inline=True)
-    embed.add_field(name="초대 링크", value="https://c11.kr/discordbot_edbslash", inline=True)
+    embed.add_field(name="초대 링크", value="https://c11.kr/n_discordbot_edbslash", inline=True)
     embed.add_field(name="개발자", value="긴급재난문자_#1978", inline=True) 
     await ctx.send(embed=embed)
 
@@ -800,16 +798,16 @@ async def saveinfo(ctx, 제목: str, 내용: str, 비밀번호: int, 공개_여�
         await ctx.send(embed=embed, hidden=True)
     else:
         NEWINFO = {"title": 제목,"content": 내용,"whether_public": 공개_여부, "owner": ctx.author.id}
-        with open('info.json','r', encoding='UTF8') as f:
+        with open('./info.json','r', encoding='UTF8') as f:
             info = json.load(f)
             info[비밀번호] = NEWINFO
-            with open('info.json','r', encoding='UTF8') as f:
+            with open('./info.json','r', encoding='UTF8') as f:
                 info_a = json.load(f)
                 if info_a.get(비밀번호):
                     embed = Embed(title="이미 비밀번호가 사용중입니다.",color=0xff0000)
                     await ctx.send(embed=embed, hidden=True)
                 else:
-                    with open('info.json','w',encoding='utf-8') as mk_f:
+                    with open('./info.json','w',encoding='utf-8') as mk_f:
                         json.dump(info,mk_f,indent='\t', ensure_ascii=False)
                         embed = Embed(title="성공적으로 정보가 저장되었습니다.", color=0x008000)
                         await ctx.send(embed=embed, hidden=True)
@@ -829,7 +827,7 @@ async def saveinfo(ctx, 제목: str, 내용: str, 비밀번호: int, 공개_여�
                     option_type=4,
                     required=True)])
 async def loadinfo(ctx, 비밀번호: int):
-    with open('info.json','r',encoding='utf-8') as f:
+    with open('./info.json','r',encoding='utf-8') as f:
         info = json.load(f)
         if info.get(비밀번호) == False:
             embed = Embed(title="정보를 찾을 수 없습니다.",color=0xff0000)
@@ -839,7 +837,7 @@ async def loadinfo(ctx, 비밀번호: int):
             await ctx.send(embed=embed, hidden=True)
             owner = client.get_user(info[str(비밀번호)]["owner"])
             embed = Embed(title=info[str(비밀번호)]["title"], description=info[str(비밀번호)]["content"], color=0x0067a3)
-            embed.set_footer(text=f"{owner}님이 불러온 정보", icon_url=owner.avatar_url)
+            embed.set_footer(text=f"{owner.name}님이 불러온 정보", icon_url=owner.avatar_url)
             if info[str(비밀번호)]["whether_public"] == "public":
                 await ctx.channel.send(embed=embed)
             else:

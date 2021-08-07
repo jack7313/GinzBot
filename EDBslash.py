@@ -57,10 +57,10 @@ async def on_ready():
             await client.change_presence(status=Status.online, activity=activity)
             await asyncio.sleep(3)
 
-list = []
+guildlist = []
 for guild in client.guilds:
     list.append(guild.id)
-guild_ids = list
+guild_ids = guildlist
 
 '''
 action_row = create_actionrow(*buttons)
@@ -70,6 +70,24 @@ await ctx.send("My Message", components=[action_row])
 async def on_message(ctx):
     if ctx.content.startswith("/hellothisisverification"):
         await ctx.channel.send("긴급재난문자_#1978")
+    if ctx.content.startswith("+건의 "):
+        if ctx.author.id == 755775043426058340:
+            with open('D:\Python_Discord_BOT\Slash_EDB\suggest.json','r', encoding='UTF8') as f:
+                suggest = json.load(f)
+                msg = ctx.content[4:30]
+                msg1 = ctx.content[31:]
+                userid = int(suggest[msg]["suggestorid"])
+                content = suggest[msg]["content"]
+                sugtype = suggest[msg]["type"]
+                username = suggest[msg]["suggestor"]
+                username1 = client.get_user(userid)
+                embed = Embed(title=sugtype, description=content, color=0x0067a3)
+                embed.set_footer(text=f"{username}님의 건의", icon_url=username1.avatar_url)
+                await username1.send(embed=embed)
+                embed = Embed(title="[답장] " + msg1, color=0x008000)
+                await username1.send(embed=embed)
+        else:
+            return None
 
 @slash.slash(name="핑",
             guild_ids=guild_ids,

@@ -1,11 +1,3 @@
-주의 사항
-==
-공개된 봇 코드는 오직 참고용으로만 사용해주세요!
-
-파일 전체를 가져다 쓰지 말아주세요!
-
-참고용 이외 용도로 필요하다면 디스코드 긴급재난문자_#1978로 문의주시면 감사하겠습니다!
-
 <p align="center">
 <img src="https://cdn.discordapp.com/avatars/837530519892787270/efd8cdc53a94915f59b576991ac886c1.webp?size=1024" width="40%" height="30%" title="Slash_ED봇" alt="ㅁㄴㅇㄹ">
 </p>

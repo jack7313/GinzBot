@@ -97,6 +97,11 @@ https://c11.kr/n_discordbot_edbslash
 
 - 검색_짤
 
+QR코드 명령어
+--
+- QR코드_생성
+
+- QR코드_인식
 
 기타 명령어
 --

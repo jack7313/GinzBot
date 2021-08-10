@@ -989,6 +989,7 @@ async def help(ctx):
     embed3 = Embed(title="도움말", description="정보(저장) 명령어", color=0x0067a3)
     embed4 = Embed(title="도움말", description="번역 명령어", color=0x0067a3)
     embed5 = Embed(title="도움말", description="검색 명령어", color=0x0067a3)
+    embed8 = Embed(title="도움말", description="QR코드 명령어", color=0x0067a3)
     embed6 = Embed(title="도움말", description="그 외 명령어", color=0x0067a3)
 
     embed.add_field(name="핑", value="봇의 핑을 알려줍니다.", inline=False)
@@ -999,13 +1000,13 @@ async def help(ctx):
 
     embed1.add_field(name="킥", value="유저를 킥합니다.\n이때 킥된 유저는 다시 서버에 들어올 수 있습니다.", inline=False)
     embed1.add_field(name="밴", value="유저를 밴합니다.\n이때 밴된 유저는 관리자가 차단 목록에서 빼지 않는 이상 다시 들어올 수 없습니다.", inline=False)
-    embed1.add_field(name="뮤트", value="유저를 뮤트합니다.\n`/언뮤트` 명령어를 사용해 유저를 언뮤트할 수 있습니다.", inline=False)
+    embed1.add_field(name="뮤트", value="유저를 뮤트합니다.\n`/언뮤트` 명령어 유저를 언뮤트할 수 있습니다.", inline=False)
     embed1.add_field(name="언뮤트", value="유저를 언뮤트합니다.\n`/뮤트` 명령어로 다시 유저를 뮤트할 수 있습니다.", inline=False)
     embed1.add_field(name="삭제", value="메시지를 삭제합니다.\n입력한 개수만큼 메시지가 삭제됩니다.", inline=False)
     embed1.add_field(name="역할부여", value="유저에게 역할을 부여합니다.\n`/역할해제` 명령어로 다시 해제할 수 있습니다.", inline=False)
     embed1.add_field(name="역할해제", value="유저의 역할을 해제합니다.\n`/역할부여` 명령어로 다시 역할을 부여할 수 있습니다.", inline=False)
-    
-    embed7.add_field(name="게임", value="음성 채널에서 게임(활동)을 합니다.\n유튜브 시청, 추리 게임, 낚시 게임, 체스 게임에서 선택할 수 있습니다.\n음성 채널을 선택하지 않으면 오류가 발생합니다.\n(꼭 음성 채널을 선택해주세요!)\n오류는 https://docs.discord-together.ml/docs/errors 를 참고해주세요.\n그 외 오류는 `/건의` 명령어를 사용해주세요.")
+
+    embed7.add_field(name="게임", value="음성 채널에서 게임(활동)을 합니다.\n유튜브 시청, 추리 게임, 낚시 게임, 체스 게임에서 선택할 수 있습니다.\n음성 채널을 선택하지 않으면 오류가 발생합니다.\n(꼭 음성 채널을 선택해주세요!)\n오류는 https://docs.discord-together.ml/docs/errors 를 참고해주세요.\n그 외 오류는 `/건의` 명령어를 사용해주세요.", inline=False)
 
     embed2.add_field(name="유저정보", value="유저의 정보를 불러옵니다.\n유저의 닉네임, 아이콘, ID, 디스코드 가입일을 불러옵니다.", inline=False)
     embed2.add_field(name="서버정보", value="이 서버의 정보를 불러옵니다.\n서버의 이름, 아이콘, ID, 생성일, 주인, 멤버 수를 불러옵니다.", inline=False)
@@ -1020,10 +1021,13 @@ async def help(ctx):
     embed5.add_field(name="검색_네이버", value="네이버에서 검색할 내용을 검색합니다.\n블로그, 뉴스, 책, 백과사전, 영화, 카페글, 지식IN, 지역, 쇼핑 중 하나로 검색할 수 있습니다.\n검색 결과 중 5개만 표시됩니다.", inline=False)
     embed5.add_field(name="검색_짤", value="Tenor에서 짤을 검색합니다.\n검색된 짤 중 10개만 표시됩니다.", inline=False)
 
-    embed6.add_field(name="건의", value="봇의 버그나 필요한 기능을 건의합니다.\n건의가 관리자에게 전송됩니다.\n버그는 최대 일주일 이내로 고쳐집니다.\n버그가 수정됐거나 필요한 기능이 추가되면 건의자의 DM으로 처리되었다는 메시지가 보내집니다.")
-    embed6.add_field(name="select", value="디스코드 API 신기술인 셀렉트에 대한 테스트 명령어입니다.", inline=False)
+    embed8.add_field(name="QR코드_생성", value="QR코드를 생성합니다.\n입력된 내용으로 QR코드가 만들어집니다.", inline=False)
+    embed8.add_field(name="QR코드_인식", value="QR코드를 인식합니다.\n입력된 QR코드의 이미지 주소를 인식합니다.\n흔들렸거나 흐릿한 QR코드는 인식을 못할 수도 있습니다.", inline=False)
+
+    embed6.add_field(name="건의", value="봇의 버그나 필요한 기능을 건의합니다.\n건의가 관리자에게 전송됩니다.\n버그는 최대 일주일 이내로 고쳐집니다.\n버그가 수정됐거나 필요한 기능이 추가되면 건의자의 DM으로 처리되었다는 메시지가 보내집니다.", inline=False)
+    embed6.add_field(name="select", value="디스코드 셀렉트에 대한 테스트 명령어입니다.", inline=False)
     
-    await Paginator(bot=client, ctx=ctx, pages=[embed, embed1, embed7, embed2, embed3, embed4, embed5, embed6])
+    await Paginator(bot=client, ctx=ctx, pages=[embed, embed1, embed7, embed2, embed3, embed4, embed5, embed8, embed6])
 
 @slash.slash(name="건의",
             description="봇의 버그나 필요한 기능을 건의합니다.",
@@ -1187,7 +1191,7 @@ async def gameactivity(ctx, 채널: int, 활동: str):
         await ctx.send(embed=Embed(title="선택한 채널이 음성 채널이 아닙니다.", colour=0xff0000), hidden=True)
 
 @slash.slash(name="QR코드_생성",
-            description="링크의 QR코드를 생성합니다.",
+            description="QR코드를 생성합니다.",
             options=[
                 create_option(
                     name="내용",

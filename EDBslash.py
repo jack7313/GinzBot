@@ -326,11 +326,11 @@ async def unmute(ctx, 유저: str):
 async def translate(ctx, 언어: str, 내용: str):
     if 언어 == "ko-en":
         #discord bot tokken
-        token = 'ODM3NTMwNTE5ODkyNzg3Mjcw.YIt5FA.k1g_wH3QtZdb6N1GHSeNm4RM2MM'
+        token = 'token'
         #Naver Open API application ID
-        client_id = "4nmibDIfZfT4pUreTTtc"
+        client_id = "client_id"
         #Naver Open API application token
-        client_secret = "wRqTmBbWdA"
+        client_secret = "client_secret"
         baseurl = "https://openapi.naver.com/v1/papago/n2mt"
         # 띄어쓰기 : split처리후 [1:]을 for문으로 붙인다.
         trsText = 내용.split(" ")
@@ -373,11 +373,11 @@ async def translate(ctx, 언어: str, 내용: str):
             await ctx.send("Translate Failed. HTTPError Occured.",hidden=True)
     if 언어 == "ko-ja":
         #discord bot tokken
-        token = 'ODM3NTMwNTE5ODkyNzg3Mjcw.YIt5FA.k1g_wH3QtZdb6N1GHSeNm4RM2MM'
+        token = 'token'
         #Naver Open API application ID
-        client_id = "4nmibDIfZfT4pUreTTtc"
+        client_id = "client_id"
         #Naver Open API application token
-        client_secret = "wRqTmBbWdA"
+        client_secret = "client_secret"
         baseurl = "https://openapi.naver.com/v1/papago/n2mt"
         # 띄어쓰기 : split처리후 [1:]을 for문으로 붙인다.
         trsText = 내용.split(" ")
@@ -420,11 +420,11 @@ async def translate(ctx, 언어: str, 내용: str):
             await ctx.send("Translate Failed. HTTPError Occured.",hidden=True)
     if 언어 == "ko-ch":
         #discord bot tokken
-        token = 'ODM3NTMwNTE5ODkyNzg3Mjcw.YIt5FA.k1g_wH3QtZdb6N1GHSeNm4RM2MM'
+        token = 'token'
         #Naver Open API application ID
-        client_id = "4nmibDIfZfT4pUreTTtc"
+        client_id = "client_id"
         #Naver Open API application token
-        client_secret = "wRqTmBbWdA"
+        client_secret = "client_secret"
         baseurl = "https://openapi.naver.com/v1/papago/n2mt"
         # 띄어쓰기 : split처리후 [1:]을 for문으로 붙인다.
         trsText = 내용.split(" ")
@@ -467,11 +467,11 @@ async def translate(ctx, 언어: str, 내용: str):
             await ctx.send("Translate Failed. HTTPError Occured.",hidden=True)
     if 언어 == "en-ko":
         #discord bot tokken
-        token = 'ODM3NTMwNTE5ODkyNzg3Mjcw.YIt5FA.k1g_wH3QtZdb6N1GHSeNm4RM2MM'
+        token = 'token'
         #Naver Open API application ID
-        client_id = "4nmibDIfZfT4pUreTTtc"
+        client_id = "client_id"
         #Naver Open API application token
-        client_secret = "wRqTmBbWdA"
+        client_secret = "client_secret"
         baseurl = "https://openapi.naver.com/v1/papago/n2mt"
         # 띄어쓰기 : split처리후 [1:]을 for문으로 붙인다.
         trsText = 내용.split(" ")
@@ -514,11 +514,11 @@ async def translate(ctx, 언어: str, 내용: str):
             await ctx.send("Translate Failed. HTTPError Occured.",hidden=True)
     if 언어 == "ja-ko":
         #discord bot tokken
-        token = 'ODM3NTMwNTE5ODkyNzg3Mjcw.YIt5FA.k1g_wH3QtZdb6N1GHSeNm4RM2MM'
+        token = 'token'
         #Naver Open API application ID
-        client_id = "4nmibDIfZfT4pUreTTtc"
+        client_id = "client_id"
         #Naver Open API application token
-        client_secret = "wRqTmBbWdA"
+        client_secret = "client_secret"
         baseurl = "https://openapi.naver.com/v1/papago/n2mt"
         # 띄어쓰기 : split처리후 [1:]을 for문으로 붙인다.
         trsText = 내용.split(" ")
@@ -561,11 +561,11 @@ async def translate(ctx, 언어: str, 내용: str):
             await ctx.send("Translate Failed. HTTPError Occured.",hidden=True)
     if 언어 == "ch-ko":
         #discord bot tokken
-        token = 'ODM3NTMwNTE5ODkyNzg3Mjcw.YIt5FA.k1g_wH3QtZdb6N1GHSeNm4RM2MM'
+        token = 'token'
         #Naver Open API application ID
-        client_id = "4nmibDIfZfT4pUreTTtc"
+        client_id = "client_id"
         #Naver Open API application token
-        client_secret = "wRqTmBbWdA"
+        client_secret = "client_secret"
         baseurl = "https://openapi.naver.com/v1/papago/n2mt"
         # 띄어쓰기 : split처리후 [1:]을 for문으로 붙인다.
         trsText = 내용.split(" ")
@@ -664,8 +664,8 @@ async def timer(ctx, 제목: str, 시간: int):
                     required=True
                 )])
 async def googlesearch(ctx, 내용: str):
-    my_api_key = "AIzaSyAAyGxc_d5EV4KE65uRzPxSY3jsg_WLZjc"
-    my_cse_id = "5eeb4e630916438a8"  
+    my_api_key = "my_api_key"
+    my_cse_id = "my_cse_id"  
     def google_search(search_term, api_key, cse_id, **kwargs):
         service = build("customsearch", "v1", developerKey=api_key)
         res = service.cse().list(q=search_term, cx=cse_id, **kwargs).execute()
@@ -736,8 +736,8 @@ async def googlesearch(ctx, 내용: str):
                             value="shop")]
                 )])
 async def naversearch(ctx, 내용: str, 종류: int):
-    client_id = "KAXnOaJ61xIutnSBCjfk"
-    client_secret = "9sUFi2eDBP"
+    client_id = "client_id"
+    client_secret = "client_secret"
     encText = urllib.parse.quote(내용)
     url = f"https://openapi.naver.com/v1/search/{종류}?query=" + encText
     request = urllib.request.Request(url)
@@ -783,7 +783,7 @@ async def naversearch(ctx, 내용: str, 종류: int):
         embed.set_footer(text="네이버 API를 사용합니다.",icon_url="https://cdn.discordapp.com/attachments/849872302707441694/861437791917178880/asdfadsfasdfadsf.png")
         await ctx.send(embed=embed)
     else:
-        await ctx.send(embed=Embed(title = "Error Code:" + rescode, color = 0xff0000))
+        await ctx.send(embed=Embed(title = "Error Code:" + rescode, color = 0xff0000), hidden=True)
 
 @slash.slash(name="정보_저장",
             description="중요한 정보를 저장합니다.",
@@ -921,7 +921,7 @@ async def select(ctx):
                     option_type=3,
                     required=True)])
 async def tenorgif(ctx, 내용: str):
-    apikey = "D8K93KK1HF3U"  # test value
+    apikey = "apikey"  # test value
     lmt = 10
 
     # our test search
@@ -977,7 +977,7 @@ async def tenorgif(ctx, 내용: str):
         embed10.set_footer(text="Tenor API를 사용합니다.",icon_url="https://cdn.discordapp.com/attachments/849872302707441694/861805242814038076/ds.png")
         await Paginator(bot=client, ctx=ctx, pages=[embed1, embed2, embed3, embed4, embed5, embed6, embed7, embed8, embed9, embed10])
     else:
-        await ctx.send(embed=Embed(title = "Error Code:" + r.status_code, color = 0xff0000))
+        await ctx.send(embed=Embed(title = "Error Code:" + r.status_code, color = 0xff0000), hidden=True)
 
 @slash.slash(name="도움말",
             description="Slash_ED봇의 도움말입니다.")
@@ -1184,6 +1184,52 @@ async def gameactivity(ctx, 채널: int, 활동: str):
     if 채널.type == ChannelType.voice:
         await ctx.send(embed=embed)
     else:
-        await ctx.send(embed=Embed(title="선택한 채널이 음성 채널이 아닙니다.", colour=0xff0000))
+        await ctx.send(embed=Embed(title="선택한 채널이 음성 채널이 아닙니다.", colour=0xff0000), hidden=True)
+
+@slash.slash(name="QR코드_생성",
+            description="링크의 QR코드를 생성합니다.",
+            options=[
+                create_option(
+                    name="내용",
+                    description="QR코드를 만들 내용을 입력하세요.",
+                    option_type=3,
+                    required=True)])
+async def createqr(ctx, 내용: str):
+    await ctx.defer()
+    qrcode = requests.get(f"https://api.qrserver.com/v1/create-qr-code/?data={내용}")
+    if qrcode.status_code == 200:
+        embed = Embed(title=내용, color=0x0067a3)
+        embed.set_image(url=f"https://api.qrserver.com/v1/create-qr-code/?data={내용}")
+        embed.set_footer(text="QR Code Generator API를 사용합니다.", icon_url="https://api.qrserver.com/v1/create-qr-code/?qzone=4&data=https://goqr.me/")
+        await asyncio.sleep(5)
+        await ctx.send(embed=embed)
+    else:
+        await ctx.send(embed=Embed(title=f"Error Code: {qrcode.status_code}", color=0xff0000), hidden=True)
+
+@slash.slash(name="QR코드_인식",
+            description="QR코드를 인식합니다.",
+            guild_ids=guildlist,
+            options=[
+                create_option(
+                    name="주소",
+                    description="QR코드의 이미지 주소를 입력하세요.",
+                    option_type=3,
+                    required=True)])
+async def readqr(ctx, 주소: str):
+    await ctx.defer()
+    if 주소.startswith("https://") or 주소.startswith("http://"):
+        qrcode = requests.get(f"https://api.qrserver.com/v1/read-qr-code/?fileurl={주소}")
+        if qrcode.status_code == 200:
+            qrcontent = json.loads(qrcode.content)[0]["symbol"][0]["data"]
+            if qrcontent == "null":
+                await ctx.send(embed=Embed(title="QR코드 인식중 오류가 발생했습니다.", color=0xff0000), hidden=True)
+            else:
+                embed = Embed(title=qrcontent, description=주소, color=0x0067a3)
+                embed.set_footer(text="QR Code Generator API를 사용합니다.", icon_url="https://api.qrserver.com/v1/create-qr-code/?qzone=4&data=https://goqr.me/")
+                await ctx.send(embed=embed)
+        else:
+            await ctx.send(embed=Embed(title=f"Error Code: {qrcode.status_code}", color=0xff0000), hidden=True)
+    else:
+        await ctx.send(embed=Embed(title="잘못된 이미지 주소입니다.", color=0xff0000), hidden=True)
 
 client.run("Token")

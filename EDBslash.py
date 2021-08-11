@@ -19,7 +19,7 @@ from urllib.parse import quote
 import json
 from googleapiclient.discovery import build
 import urllib.request
-from SlashPaginator import Paginator
+from module.SlashPaginator import Paginator
 import requests
 import koreanbots
 from discordTogether import DiscordTogether, errors
@@ -95,13 +95,11 @@ async def on_message(ctx):
             return None
 
 @slash.slash(name="핑",
-            guild_ids=guild_ids,
             description="봇의 핑을 알려줍니다.")
 async def ping(ctx):
     await ctx.send(f"퐁! `{round(client.latency*1000)}ms`")
 
 @slash.slash(name="현재시간",
-            guild_ids=guild_ids,
             description="현재 시간을 알려줍니다.")
 async def nowtime(ctx):
     #구
@@ -1212,7 +1210,6 @@ async def createqr(ctx, 내용: str):
 
 @slash.slash(name="QR코드_인식",
             description="QR코드를 인식합니다.",
-            guild_ids=guildlist,
             options=[
                 create_option(
                     name="주소",
@@ -1225,7 +1222,7 @@ async def readqr(ctx, 주소: str):
         qrcode = requests.get(f"https://api.qrserver.com/v1/read-qr-code/?fileurl={주소}")
         if qrcode.status_code == 200:
             qrcontent = json.loads(qrcode.content)[0]["symbol"][0]["data"]
-            if qrcontent == "null":
+            if qrcontent == None:
                 await ctx.send(embed=Embed(title="QR코드 인식중 오류가 발생했습니다.", color=0xff0000), hidden=True)
             else:
                 embed = Embed(title=qrcontent, description=주소, color=0x0067a3)
@@ -1235,5 +1232,6 @@ async def readqr(ctx, 주소: str):
             await ctx.send(embed=Embed(title=f"Error Code: {qrcode.status_code}", color=0xff0000), hidden=True)
     else:
         await ctx.send(embed=Embed(title="잘못된 이미지 주소입니다.", color=0xff0000), hidden=True)
+
 
 client.run("Token")

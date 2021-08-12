@@ -363,7 +363,7 @@ async def translate(ctx, 언어: str, 내용: str):
                 embed.add_field(name="한국어", value=savedCombineword, inline=False)
                 embed.add_field(name="영어", value=translatedText, inline=False)
                 embed.set_thumbnail(url="https://papago.naver.com/static/img/papago_og.png")
-                embed.set_footer(text="API provided by Naver Open API")
+                embed.set_footer(text="네이버 파파고 API를 사용합니다.")
                 await ctx.send(embed=embed)
             else:
                 await ctx.send("Error Code : " + responsedCode,hidden=True)
@@ -410,7 +410,7 @@ async def translate(ctx, 언어: str, 내용: str):
                     embed.add_field(name="한국어", value=savedCombineword, inline=False)
                     embed.add_field(name="일본어", value=translatedText, inline=False)
                     embed.set_thumbnail(url="https://papago.naver.com/static/img/papago_og.png")
-                    embed.set_footer(text="API provided by Naver Open API")
+                    embed.set_footer(text="네이버 파파고 API를 사용합니다.")
                     await ctx.send(embed=embed)
                 else:
                     await ctx.send("Error Code : " + responsedCode,hidden=True)
@@ -457,7 +457,7 @@ async def translate(ctx, 언어: str, 내용: str):
                 embed.add_field(name="한국어", value=savedCombineword, inline=False)
                 embed.add_field(name="중국어(간체)", value=translatedText, inline=False)
                 embed.set_thumbnail(url="https://papago.naver.com/static/img/papago_og.png")
-                embed.set_footer(text="API provided by Naver Open API")
+                embed.set_footer(text="네이버 파파고 API를 사용합니다.")
                 await ctx.send(embed=embed)
             else:
                 await ctx.send("Error Code : " + responsedCode,hidden=True)
@@ -504,7 +504,7 @@ async def translate(ctx, 언어: str, 내용: str):
                 embed.add_field(name="영어", value=savedCombineword, inline=False)
                 embed.add_field(name="한국어", value=translatedText, inline=False)
                 embed.set_thumbnail(url="https://papago.naver.com/static/img/papago_og.png")
-                embed.set_footer(text="API provided by Naver Open API")
+                embed.set_footer(text="네이버 파파고 API를 사용합니다.")
                 await ctx.send(embed=embed)
             else:
                 await ctx.send("Error Code : " + responsedCode,hidden=True)
@@ -551,7 +551,7 @@ async def translate(ctx, 언어: str, 내용: str):
                 embed.add_field(name="일본어", value=savedCombineword, inline=False)
                 embed.add_field(name="한국어", value=translatedText, inline=False)
                 embed.set_thumbnail(url="https://papago.naver.com/static/img/papago_og.png")
-                embed.set_footer(text="API provided by Naver Open API")
+                embed.set_footer(text="네이버 파파고 API를 사용합니다.")
                 await ctx.send(embed=embed)
             else:
                 await ctx.send("Error Code : " + responsedCode,hidden=True)
@@ -598,7 +598,7 @@ async def translate(ctx, 언어: str, 내용: str):
                 embed.add_field(name="중국어(간체)", value=savedCombineword, inline=False)
                 embed.add_field(name="한국어", value=translatedText, inline=False)
                 embed.set_thumbnail(url="https://papago.naver.com/static/img/papago_og.png")
-                embed.set_footer(text="API provided by Naver Open API")
+                embed.set_footer(text="네이버 파파고 API를 사용합니다.")
                 await ctx.send(embed=embed)
             else:
                 await ctx.send("Error Code : " + responsedCode,hidden=True)
@@ -686,7 +686,7 @@ async def googlesearch(ctx, 내용: str):
         embed.add_field(name=title[i], value=link[i], inline=False)
         if i == 5:
             break
-    embed.set_footer(text="Google API를 사용합니다.",icon_url="https://img.icons8.com/color/452/google-logo.png")
+    embed.set_footer(text="구글 검색 API를 사용합니다.",icon_url="https://img.icons8.com/color/452/google-logo.png")
 
     await ctx.send(embed=embed)
 
@@ -778,7 +778,7 @@ async def naversearch(ctx, 내용: str, 종류: int):
             embed.add_field(name=title[i], value=link[i], inline=False)
             if i == 5:
                 break
-        embed.set_footer(text="네이버 API를 사용합니다.",icon_url="https://cdn.discordapp.com/attachments/849872302707441694/861437791917178880/asdfadsfasdfadsf.png")
+        embed.set_footer(text="네이버 검색 API를 사용합니다.",icon_url="https://cdn.discordapp.com/attachments/849872302707441694/861437791917178880/asdfadsfasdfadsf.png")
         await ctx.send(embed=embed)
     else:
         await ctx.send(embed=Embed(title = "Error Code:" + rescode, color = 0xff0000), hidden=True)
@@ -1198,12 +1198,15 @@ async def gameactivity(ctx, 채널: int, 활동: str):
                     required=True)])
 async def createqr(ctx, 내용: str):
     await ctx.defer()
-    qrcode = requests.get(f"https://api.qrserver.com/v1/create-qr-code/?data={내용}")
+    # qrcode = requests.get(f"https://api.qrserver.com/v1/create-qr-code/?data={내용}")
+    qrcode = requests.get(f"https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl={내용}")
     if qrcode.status_code == 200:
         embed = Embed(title=내용, color=0x0067a3)
-        embed.set_image(url=f"https://api.qrserver.com/v1/create-qr-code/?data={내용}")
-        embed.set_footer(text="QR Code Generator API를 사용합니다.", icon_url="https://api.qrserver.com/v1/create-qr-code/?qzone=4&data=https://goqr.me/")
-        await asyncio.sleep(5)
+        # embed.set_image(url=f"https://api.qrserver.com/v1/create-qr-code/?data={내용}")
+        embed.set_image(url=f"https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl={내용}")
+        # embed.set_footer(text="QR Code Generator API를 사용합니다.", icon_url="https://api.qrserver.com/v1/create-qr-code/?qzone=10&data=https://goqr.me/")
+        embed.set_footer(text="구글 QR코드 API를 사용합니다.", icon_url="https://api.qrserver.com/v1/create-qr-code/?qzone=10&data=https://developers.google.com/chart/infographics/docs/qr_codes")
+        # await asyncio.sleep(5)
         await ctx.send(embed=embed)
     else:
         await ctx.send(embed=Embed(title=f"Error Code: {qrcode.status_code}", color=0xff0000), hidden=True)
@@ -1225,13 +1228,14 @@ async def readqr(ctx, 주소: str):
             if qrcontent == None:
                 await ctx.send(embed=Embed(title="QR코드 인식중 오류가 발생했습니다.", color=0xff0000), hidden=True)
             else:
-                embed = Embed(title=qrcontent, description=주소, color=0x0067a3)
-                embed.set_footer(text="QR Code Generator API를 사용합니다.", icon_url="https://api.qrserver.com/v1/create-qr-code/?qzone=4&data=https://goqr.me/")
+                embed = Embed(title=qrcontent, description=f"[QR코드 이미지 주소]({주소})", color=0x0067a3)
+                embed.set_footer(text="QR Code Generator API를 사용합니다.", icon_url="https://api.qrserver.com/v1/create-qr-code/?qzone=10&data=https://goqr.me/")
                 await ctx.send(embed=embed)
         else:
             await ctx.send(embed=Embed(title=f"Error Code: {qrcode.status_code}", color=0xff0000), hidden=True)
     else:
         await ctx.send(embed=Embed(title="잘못된 이미지 주소입니다.", color=0xff0000), hidden=True)
+
 
 
 client.run("Token")

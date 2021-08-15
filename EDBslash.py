@@ -1,7 +1,8 @@
 '''
 봇 코드를 사용할 때 꼭 출처를 남기고 사용해주세요!
 
-수정 필요 코드: 번역의 'token', 'client_id', 'client_secret'
+수정 필요 코드: KorBot = koreanbots.Client(client, 'token')의 'token'
+               번역의 'token', 'client_id', 'client_secret'
                검색_구글의 'my_api_key', 'my_cse_id'
                검색_네이버의 'client_id', 'client_secret'
                검색_짤의 'apikey'

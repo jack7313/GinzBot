@@ -1,5 +1,11 @@
 '''
 봇 코드를 사용할 때 꼭 출처를 남기고 사용해주세요!
+
+수정 필요 코드: 번역의 'token', 'client_id', 'client_secret'
+               검색_구글의 'my_api_key', 'my_cse_id'
+               검색_네이버의 'client_id', 'client_secret'
+               검색_짤의 'apikey'
+               client.run('Token')의 'Token'
 '''
 
 
@@ -23,6 +29,7 @@ from module.SlashPaginator import Paginator
 import requests
 import koreanbots
 from discordTogether import DiscordTogether, errors
+from module.GameUserInfo import pubg
 
 client = Client(intents=Intents.all())
 slash = SlashCommand(client, sync_commands=True)
@@ -983,6 +990,7 @@ async def help(ctx):
     embed = Embed(title="도움말", description="기본 명령어", color=0x0067a3)
     embed1 = Embed(title="도움말", description="관리 명령어", color=0x0067a3)
     embed7 = Embed(title="도움말", description="게임 명령어", color=0x0067a3)
+    embed9 = Embed(title="도움말", description="전적 명령어", color=0x0067a3)
     embed2 = Embed(title="도움말", description="정보 명령어", color=0x0067a3)
     embed3 = Embed(title="도움말", description="정보(저장) 명령어", color=0x0067a3)
     embed4 = Embed(title="도움말", description="번역 명령어", color=0x0067a3)
@@ -1006,6 +1014,8 @@ async def help(ctx):
 
     embed7.add_field(name="게임", value="음성 채널에서 게임(활동)을 합니다.\n유튜브 시청, 추리 게임, 낚시 게임, 체스 게임에서 선택할 수 있습니다.\n음성 채널을 선택하지 않으면 오류가 발생합니다.\n(꼭 음성 채널을 선택해주세요!)\n오류는 https://docs.discord-together.ml/docs/errors 를 참고해주세요.\n그 외 오류는 `/건의` 명령어를 사용해주세요.", inline=False)
 
+    embed9.add_field(name="전적_배틀그라운드", value="유저의 배틀그라운드 전적을 알려줍니다.\n유저의 닉네임을 입력하면 유저의 전적을 불러옵니다.", inline=False)
+
     embed2.add_field(name="유저정보", value="유저의 정보를 불러옵니다.\n유저의 닉네임, 아이콘, ID, 디스코드 가입일을 불러옵니다.", inline=False)
     embed2.add_field(name="서버정보", value="이 서버의 정보를 불러옵니다.\n서버의 이름, 아이콘, ID, 생성일, 주인, 멤버 수를 불러옵니다.", inline=False)
     embed2.add_field(name="봇정보", value="Slash_ED봇의 정보를 알려줍니다.\n봇의 닉네임, 아이콘, 소개, 기능, 탄생일, 서버 수, 초대 링크, 개발자를 알려줍니다.", inline=False)
@@ -1019,13 +1029,13 @@ async def help(ctx):
     embed5.add_field(name="검색_네이버", value="네이버에서 검색할 내용을 검색합니다.\n블로그, 뉴스, 책, 백과사전, 영화, 카페글, 지식IN, 지역, 쇼핑 중 하나로 검색할 수 있습니다.\n검색 결과 중 5개만 표시됩니다.", inline=False)
     embed5.add_field(name="검색_짤", value="Tenor에서 짤을 검색합니다.\n검색된 짤 중 10개만 표시됩니다.", inline=False)
 
-    embed8.add_field(name="QR코드_생성", value="QR코드를 생성합니다.\n입력된 내용으로 QR코드가 만들어집니다.", inline=False)
+    embed8.add_field(name="QR코드_생성", value="QR코드를 생성합니다.\n입력된 내용으로 QR코드가 만들어집니다.\n(띄어쓰기를 입력하면 오류가 발생하니 주의해주세요!)", inline=False)
     embed8.add_field(name="QR코드_인식", value="QR코드를 인식합니다.\n입력된 QR코드의 이미지 주소를 인식합니다.\n흔들렸거나 흐릿한 QR코드는 인식을 못할 수도 있습니다.", inline=False)
 
     embed6.add_field(name="건의", value="봇의 버그나 필요한 기능을 건의합니다.\n건의가 관리자에게 전송됩니다.\n버그는 최대 일주일 이내로 고쳐집니다.\n버그가 수정됐거나 필요한 기능이 추가되면 건의자의 DM으로 처리되었다는 메시지가 보내집니다.", inline=False)
     embed6.add_field(name="select", value="디스코드 셀렉트에 대한 테스트 명령어입니다.", inline=False)
     
-    await Paginator(bot=client, ctx=ctx, pages=[embed, embed1, embed7, embed2, embed3, embed4, embed5, embed8, embed6])
+    await Paginator(bot=client, ctx=ctx, pages=[embed, embed1, embed7, embed9, embed2, embed3, embed4, embed5, embed8, embed6])
 
 @slash.slash(name="건의",
             description="봇의 버그나 필요한 기능을 건의합니다.",
@@ -1236,6 +1246,55 @@ async def readqr(ctx, 주소: str):
     else:
         await ctx.send(embed=Embed(title="잘못된 이미지 주소입니다.", color=0xff0000), hidden=True)
 
-
+@slash.slash(name="전적_배틀그라운드",
+            description="유저의 배틀그라운드 전적을 알려줍니다.",
+            options=[
+                create_option(
+                    name="닉네임",
+                    description="유저의 닉네임을 입력하세요.",
+                    option_type=3,
+                    required=True),
+                create_option(
+                    name="플렛폼",
+                    description="유저의 플렛폼을 선택하세요.",
+                    option_type=3,
+                    required=True,
+                    choices=[
+                        create_choice(
+                            name="Steam",
+                            value="0"),
+                        create_choice(
+                            name="Kakao",
+                            value="1"),
+                        create_choice(
+                            name="XBox",
+                            value="2"),
+                        create_choice(
+                            name="PlayStation",
+                            value="3"),
+                        create_choice(
+                            name="Stadia",
+                            value='4')]),
+                create_option(
+                    name="매치_종류",
+                    description="매치의 종류를 선택하세요.",
+                    option_type=3,
+                    required=True,
+                    choices=[
+                        create_choice(
+                            name="일반전",
+                            value="normal"),
+                        create_choice(
+                            name="경쟁전",
+                            value="ranked")])])
+async def pubginfo(ctx, 닉네임: str, 플렛폼: str, 매치_종류: str):
+    await ctx.defer()
+    pubglist = await pubg(닉네임, int(플렛폼), 매치_종류)
+    if str(type(pubglist)) == "<class 'list'>":
+        await Paginator(bot=client, ctx=ctx, pages=pubglist)
+    else:
+        await ctx.send(embed=pubglist, hidden=True)
+        
+        
 
 client.run("Token")

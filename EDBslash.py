@@ -871,52 +871,6 @@ async def loadinfo(ctx, 비밀번호: int):
                 await ctx.channel.send(embed=embed)
             else:
                 await ctx.send(embed=embed, hidden=True)
-'''
-@slash.slash(name="정보_삭제",
-            description="저장한 정보를 삭제할 수 있습니다.",
-            options=[
-                create_option(
-                    name="비밀번호",
-                    description="저장한 정보의 비밀번호를 입력하세요.",
-                    option_type=4,
-                    required=True)])
-async def deleteinfo(ctx, 비밀번호: int):
-    with open('info.json','r', encoding='UTF8') as f:
-        info = json.load(f)
-        if info.get(str(비밀번호)) == False:
-            embed = Embed(title="정보를 찾을 수 없습니다.",color=0xff0000)
-            await ctx.send(embed=embed, hidden=True)
-        else:
-            if info[str(비밀번호)]["owner"] != ctx.author.id:
-                embed = Embed(title="정보 소유자가 다릅니다.",color=0xff0000)
-                await ctx.send(embed=embed, hidden=True)
-            else:
-                info.pop(str(비밀번호))
-                embed = Embed(title="정보가 성공적으로 삭제됐습니다.",color=0x008000)
-                await ctx.send(embed=embed, hidden=True)
-'''
-@slash.slash(name="select",
-            description="select test")
-async def select(ctx):
-    select = create_select(
-        options=[
-            create_select_option(label="Lab Coat", value="coat", emoji="🥼"),
-            create_select_option(label="Test Tube", value="tube", emoji="🧪"),
-            create_select_option(label="Petri Dish", value="dish", emoji="🧫"),
-        ],
-        placeholder="Choose your option",
-        min_values=1,
-        max_values=2
-        )
-    action_row = create_actionrow(select)
-    messageMain = await ctx.send(content="test", components=[action_row])
-    while True:
-        try:
-            select_ctx: ComponentContext = await wait_for_component(client, components=action_row, timeout=30.0)
-            print(select["components"][0]["label"])
-            await messageMain.reply(content = f" select selected!")
-        except asyncio.TimeoutError:
-            await messageMain.edit(content="test timeout")
 
 @slash.slash(name="검색_짤",
             description="Tenor에서 짤을 검색합니다.",

@@ -1,8 +1,7 @@
 '''
 봇 코드를 사용할 때 꼭 출처를 남기고 사용해주세요!
 
-수정 필요 코드: KorBot = koreanbots.Client(client, 'token')의 'token'
-               번역의 'token', 'client_id', 'client_secret'
+수정 필요 코드: 번역의 'token', 'client_id', 'client_secret'
                검색_구글의 'my_api_key', 'my_cse_id'
                검색_네이버의 'client_id', 'client_secret'
                검색_짤의 'apikey'
@@ -28,13 +27,11 @@ from googleapiclient.discovery import build
 import urllib.request
 from module.SlashPaginator import Paginator
 import requests
-import koreanbots
 from discordTogether import DiscordTogether, errors
 from module.GameUserInfo import pubg
 
 client = Client(intents=Intents.all())
 slash = SlashCommand(client, sync_commands=True)
-KorBot = koreanbots.Client(client, 'token')
 togetherControl = DiscordTogether(client)
 
 @client.event
@@ -107,18 +104,6 @@ async def on_message(ctx):
 async def ping(ctx):
     await ctx.send(f"퐁! `{round(client.latency*1000)}ms`")
 
-@slash.slash(name="현재시간",
-            description="현재 시간을 알려줍니다.")
-async def nowtime(ctx):
-    #구
-    '''
-    t = ['**월**', '**화**', '**수**', '**목**', '**금**', '**토**', '**일**']
-    n = time.localtime().tm_wday
-    msg = time.strftime('**%Y** 년 **%m** 월 **%d** 일 ' + t[n] + '요일 **%H** 시 **%M** 분 **%S** 초 입니다.', time.localtime(time.time()))
-    '''
-    #신
-    await ctx.send(f"현재 시간은 <t:{round(time.time())}> 입니다.")
-
 @slash.slash(name="유저정보",
             description="유저의 정보를 불러옵니다.",
             options=[
@@ -150,59 +135,6 @@ async def guildinfo(ctx):
     embed.add_field(name="멤버 수", value=ctx.guild.member_count, inline=True)
     await ctx.send(embed=embed)
 
-@slash.slash(name="복불복",
-            description="복불복으로 값을 알려줍니다.",
-            options=[
-                create_option(
-                    name="방법",
-                    description="복불복 방법을 선택하세요.",
-                    option_type=3,
-                    required=True,
-                    choices=[
-                        create_choice(
-                            name="동전 뒤집기",
-                            value="coin"),
-                        create_choice(
-                            name="주사위 던지기",
-                            value="dice")])])
-async def coindice(ctx, 방법: str):
-    if 방법 == "coin":
-        msg = await ctx.send(content=f"동전을 던지는 중...")
-        time.sleep(3)
-        coin_random = random.randint(1,2)
-        if coin_random == 1:
-            coin_value = "앞"
-            embed=Embed(title='',colour=0x0067a3)
-            embed.set_image(url="https://cdn.discordapp.com/attachments/814319957793439777/842246982092193852/97add70cfd82c1f4.png")
-            await msg.edit(content=f"**{coin_value}**이 나왔습니다.")
-            await msg.edit(embed=embed)
-        elif coin_random == 2:
-            coin_value = "뒤"
-            embed=Embed(title='',colour=0x0067a3)
-            embed.set_image(url="https://cdn.discordapp.com/attachments/814319957793439777/842246978816835594/e2fbea0675986984.png")
-            await msg.edit(content=f"**{coin_value}**가 나왔습니다.")
-            await msg.edit(embed=embed)
-    elif 방법 == "dice":
-        msg = await ctx.send(content="주사위를 던지는 중...")
-        time.sleep(3)
-        dice_random = random.randint(1,6)
-        if dice_random == 1:
-            dice_url = 'https://cdn.discordapp.com/attachments/814319957793439777/842942645977219102/3fae2f68d8046020.png'
-        elif dice_random == 2:
-            dice_url = 'https://cdn.discordapp.com/attachments/814319957793439777/842942644086243388/81a7e4097022dc3d.png'
-        elif dice_random == 3:
-            dice_url = 'https://cdn.discordapp.com/attachments/814319957793439777/842942642064064532/398ac708b13c09fe.png'
-        elif dice_random == 4:
-            dice_url = 'https://cdn.discordapp.com/attachments/814319957793439777/842942639540011029/ecc09be68e573396.png'
-        elif dice_random == 5:
-            dice_url = 'https://cdn.discordapp.com/attachments/814319957793439777/842942638373863464/02fc88f2b736260f.png'
-        elif dice_random == 6:
-            dice_url = 'https://cdn.discordapp.com/attachments/814319957793439777/842942636075515954/9e0d0cd689b00465.png'
-        embed=Embed(title='',colour=0x0067a3)
-        embed.set_image(url=dice_url)
-        await msg.edit(content=f"**{dice_random}**이(가) 나왔습니다.")
-        await msg.edit(embed=embed)
-    
 @slash.slash(name="업타임",
             description="봇이 작동된 시간을 알려줍니다.")
 async def uptime(ctx):
@@ -791,87 +723,6 @@ async def naversearch(ctx, 내용: str, 종류: int):
     else:
         await ctx.send(embed=Embed(title = "Error Code:" + rescode, color = 0xff0000), hidden=True)
 
-@slash.slash(name="정보_저장",
-            description="중요한 정보를 저장합니다.",
-            options=[
-                create_option(
-                    name="제목",
-                    description="저장할 정보의 제목을 입력하세요.",
-                    option_type=3,
-                    required=True),
-                create_option(
-                    name="내용",
-                    description="저장할 정보의 내용을 입력하세요.",
-                    option_type=3,
-                    required=True),
-                create_option(
-                    name="비밀번호",
-                    description="저장할 정보의 비밀번호를 입력하세요.",
-                    option_type=4,
-                    required=True),
-                create_option(
-                    name="공개_여부",
-                    description="정보의 공개 여부를 선택하세요.",
-                    option_type=3,
-                    required=True,
-                    choices=[
-                        create_choice(
-                            name="공개",
-                            value="public"),
-                        create_choice(
-                            name="비공개",
-                            value="private")])])
-async def saveinfo(ctx, 제목: str, 내용: str, 비밀번호: int, 공개_여부: str):
-    if len(str(비밀번호)) != 4:
-        embed = Embed(title="비밀번호가 4자리가 아닙니다.",color=0xff0000)
-        await ctx.send(embed=embed, hidden=True)
-    else:
-        NEWINFO = {"title": 제목,"content": 내용,"whether_public": 공개_여부, "owner": ctx.author.id}
-        with open('./info.json','r', encoding='UTF8') as f:
-            info = json.load(f)
-            info[비밀번호] = NEWINFO
-            with open('./info.json','r', encoding='UTF8') as f:
-                info_a = json.load(f)
-                if info_a.get(비밀번호):
-                    embed = Embed(title="이미 비밀번호가 사용중입니다.",color=0xff0000)
-                    await ctx.send(embed=embed, hidden=True)
-                else:
-                    with open('./info.json','w',encoding='utf-8') as mk_f:
-                        json.dump(info,mk_f,indent='\t', ensure_ascii=False)
-                        embed = Embed(title="성공적으로 정보가 저장되었습니다.", color=0x008000)
-                        await ctx.send(embed=embed, hidden=True)
-                        embed = Embed(title=제목, description=내용, color=0x0067a3)
-                        embed.set_footer(text=f"{ctx.author.name}님이 저장한 정보", icon_url=ctx.author.avatar_url)
-                        if 공개_여부 == "public":
-                            await ctx.channel.send(embed=embed)
-                        else:
-                            await ctx.send(embed=embed, hidden=True)
-
-@slash.slash(name="정보_불러오기",
-            description="저장한 정보를 불러옵니다.",
-            options=[
-                create_option(
-                    name="비밀번호",
-                    description="저장한 정보의 비밀번호를 입력하세요.",
-                    option_type=4,
-                    required=True)])
-async def loadinfo(ctx, 비밀번호: int):
-    with open('./info.json','r',encoding='utf-8') as f:
-        info = json.load(f)
-        if info.get(비밀번호) == False:
-            embed = Embed(title="정보를 찾을 수 없습니다.",color=0xff0000)
-            await ctx.send(embed=embed, hidden=True)
-        else:
-            embed = Embed(title="정보가 성공적으로 불러와졌습니다.",color=0x008000)
-            await ctx.send(embed=embed, hidden=True)
-            owner = client.get_user(info[str(비밀번호)]["owner"])
-            embed = Embed(title=info[str(비밀번호)]["title"], description=info[str(비밀번호)]["content"], color=0x0067a3)
-            embed.set_footer(text=f"{owner.name}님이 불러온 정보", icon_url=owner.avatar_url)
-            if info[str(비밀번호)]["whether_public"] == "public":
-                await ctx.channel.send(embed=embed)
-            else:
-                await ctx.send(embed=embed, hidden=True)
-
 @slash.slash(name="검색_짤",
             description="Tenor에서 짤을 검색합니다.",
             options=[
@@ -947,7 +798,6 @@ async def help(ctx):
     embed7 = Embed(title="도움말", description="게임 명령어", color=0x0067a3)
     embed9 = Embed(title="도움말", description="전적 명령어", color=0x0067a3)
     embed2 = Embed(title="도움말", description="정보 명령어", color=0x0067a3)
-    embed3 = Embed(title="도움말", description="정보(저장) 명령어", color=0x0067a3)
     embed4 = Embed(title="도움말", description="번역 명령어", color=0x0067a3)
     embed5 = Embed(title="도움말", description="검색 명령어", color=0x0067a3)
     embed8 = Embed(title="도움말", description="QR코드 명령어", color=0x0067a3)
@@ -955,8 +805,6 @@ async def help(ctx):
 
     embed.add_field(name="핑", value="봇의 핑을 알려줍니다.", inline=False)
     embed.add_field(name="업타임", value="봇이 작동된 시간을 알려줍니다.")
-    embed.add_field(name="현재시간", value="현재 시간을 알려줍니다.\n모바일은 제대로된 날짜가 나오지 않을 수 있습니다.", inline=False)
-    embed.add_field(name="복불복", value="복불복으로 값을 알려줍니다.\n동전 뒤집기를 선택하면 앞/뒤 중 하나를 출력합니다.\n주사위 던지기를 선택하면 1에서 6까지 중 하나를 출력합니다.", inline=False)
     embed.add_field(name="타이머", value="타이머를 잽니다.\n중간에 봇이 꺼지면 타이머가 취소됩니다.", inline=False)
 
     embed1.add_field(name="킥", value="유저를 킥합니다.\n이때 킥된 유저는 다시 서버에 들어올 수 있습니다.", inline=False)
@@ -975,9 +823,6 @@ async def help(ctx):
     embed2.add_field(name="서버정보", value="이 서버의 정보를 불러옵니다.\n서버의 이름, 아이콘, ID, 생성일, 주인, 멤버 수를 불러옵니다.", inline=False)
     embed2.add_field(name="봇정보", value="Slash_ED봇의 정보를 알려줍니다.\n봇의 닉네임, 아이콘, 소개, 기능, 탄생일, 서버 수, 초대 링크, 개발자를 알려줍니다.", inline=False)
 
-    embed3.add_field(name="정보_저장", value="중요한 정보를 저장합니다.\n4자리 비밀번호로 정보를 쉽게 저장할 수 있습니다.\n정보의 공개 여부로 정보를 저장하거나 불러올 때 유저들에게 보여지거나 보여지지 않습니다.\n`/정보_불러오기` 명령어로 정보를 불러올 수 있습니다.", inline=False)
-    embed3.add_field(name="정보_불러오기", value="저장한 정보를 불러옵니다.\n저장한 정보의 4자리 비밀번호로 정보를 불러올 수 있습니다.", inline=False)
-
     embed4.add_field(name="번역", value="번역할 내용을 번역합니다.\n한국어에서 영/일/중으로, 영/일/중에서 한국어로 번역합니다.", inline=False)
 
     embed5.add_field(name="검색_구글", value="구글에서 검색할 내용을 검색합니다.\n검색 결과 중 5개만 표시됩니다.", inline=False)
@@ -988,9 +833,8 @@ async def help(ctx):
     embed8.add_field(name="QR코드_인식", value="QR코드를 인식합니다.\n입력된 QR코드의 이미지 주소를 인식합니다.\n흔들렸거나 흐릿한 QR코드는 인식을 못할 수도 있습니다.", inline=False)
 
     embed6.add_field(name="건의", value="봇의 버그나 필요한 기능을 건의합니다.\n건의가 관리자에게 전송됩니다.\n버그는 최대 일주일 이내로 고쳐집니다.\n버그가 수정됐거나 필요한 기능이 추가되면 건의자의 DM으로 처리되었다는 메시지가 보내집니다.", inline=False)
-    embed6.add_field(name="select", value="디스코드 셀렉트에 대한 테스트 명령어입니다.", inline=False)
     
-    await Paginator(bot=client, ctx=ctx, pages=[embed, embed1, embed7, embed9, embed2, embed3, embed4, embed5, embed8, embed6])
+    await Paginator(bot=client, ctx=ctx, pages=[embed, embed1, embed7, embed9, embed2, embed4, embed5, embed8, embed6])
 
 @slash.slash(name="건의",
             description="봇의 버그나 필요한 기능을 건의합니다.",

@@ -14,6 +14,7 @@ async def Paginator(
     ctx: SlashContext,
     pages: list,
     content: str = "",
+    hidden: bool = False
 ):
     top = len(pages)  # limit of the paginator
     bid = random.randint(10000, 99999)  # base of button id
@@ -31,7 +32,7 @@ async def Paginator(
         create_button(style=1, label="→", custom_id=f"{bid}-next", disabled=False),
     ]
     controls = create_actionrow(*controlButtons)
-    await ctx.send(f"{content}", embed=pages[0], components=[controls])
+    await ctx.send(f"{content}", embed=pages[0], components=[controls], hidden=hidden)
     while True:
         # handling the interaction
         button_context: ComponentContext = await wait_for_component(
@@ -50,7 +51,7 @@ async def Paginator(
                 "label"
             ] = f"{index+1}/{top}"  # updates the index
             await button_context.edit_origin(
-                content=f"{content}", embed=pages[index], components=[controls]
+                content=f"{content}", embed=pages[index], components=[controls], hidden=hidden
             )
         # handling next button
         if button_context.component_id == f"{bid}-next" and index < top - 1:
@@ -64,5 +65,5 @@ async def Paginator(
                 "label"
             ] = f"{index+1}/{top}"  # updates the index
             await button_context.edit_origin(
-                content=f"{content}", embed=pages[index], components=[controls]
+                content=f"{content}", embed=pages[index], components=[controls], hidden=hidden
             )

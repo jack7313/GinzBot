@@ -795,6 +795,7 @@ async def tenorgif(ctx, 내용: str):
 async def help(ctx):
     embed = Embed(title="도움말", description="기본 명령어", color=0x0067a3)
     embed1 = Embed(title="도움말", description="관리 명령어", color=0x0067a3)
+    embed10 = Embed(title="도움말", description="즐겨찾기 명령어", color=0x0067a3)
     embed7 = Embed(title="도움말", description="게임 명령어", color=0x0067a3)
     embed9 = Embed(title="도움말", description="전적 명령어", color=0x0067a3)
     embed2 = Embed(title="도움말", description="정보 명령어", color=0x0067a3)
@@ -815,6 +816,9 @@ async def help(ctx):
     embed1.add_field(name="역할부여", value="유저에게 역할을 부여합니다.\n`/역할해제` 명령어로 다시 해제할 수 있습니다.", inline=False)
     embed1.add_field(name="역할해제", value="유저의 역할을 해제합니다.\n`/역할부여` 명령어로 다시 역할을 부여할 수 있습니다.", inline=False)
 
+    embed10.add_field(name="즐겨찾기 (컨텍스트 메뉴)", value="메시지를 즐겨찾기 목록에 추가합니다.\n`/즐겨찾기_목록` 명령어로 즐겨찾기 목록을 확인할 수 있습니다.", inline=False)
+    embed10.add_field(name="즐겨찾기_목록", value="즐겨찾기 목록을 확인합니다.")
+
     embed7.add_field(name="게임", value="음성 채널에서 게임(활동)을 합니다.\n유튜브 시청, 추리 게임, 낚시 게임, 체스 게임에서 선택할 수 있습니다.\n음성 채널을 선택하지 않으면 오류가 발생합니다.\n(꼭 음성 채널을 선택해주세요!)\n오류는 https://docs.discord-together.ml/docs/errors 를 참고해주세요.\n그 외 오류는 `/건의` 명령어를 사용해주세요.", inline=False)
 
     embed9.add_field(name="전적_배틀그라운드", value="유저의 배틀그라운드 전적을 알려줍니다.\n유저의 닉네임을 입력하면 유저의 전적을 불러옵니다.", inline=False)
@@ -833,8 +837,8 @@ async def help(ctx):
     embed8.add_field(name="QR코드_인식", value="QR코드를 인식합니다.\n입력된 QR코드의 이미지 주소를 인식합니다.\n흔들렸거나 흐릿한 QR코드는 인식을 못할 수도 있습니다.", inline=False)
 
     embed6.add_field(name="건의", value="봇의 버그나 필요한 기능을 건의합니다.\n건의가 관리자에게 전송됩니다.\n버그는 최대 일주일 이내로 고쳐집니다.\n버그가 수정됐거나 필요한 기능이 추가되면 건의자의 DM으로 처리되었다는 메시지가 보내집니다.", inline=False)
-    
-    await Paginator(bot=client, ctx=ctx, pages=[embed, embed1, embed7, embed9, embed2, embed4, embed5, embed8, embed6])
+
+    await Paginator(bot=client, ctx=ctx, pages=[embed, embed1, embed10, embed7, embed9, embed2, embed4, embed5, embed8, embed6])
 
 @slash.slash(name="건의",
             description="봇의 버그나 필요한 기능을 건의합니다.",
@@ -1094,6 +1098,40 @@ async def pubginfo(ctx, 닉네임: str, 플렛폼: str, 매치_종류: str):
     else:
         await ctx.send(embed=pubglist, hidden=True)
         
-        
+@slash.context_menu(name="즐겨찾기",
+                    target=ContextMenuType.MESSAGE)
+async def bookmark(ctx: MenuContext):
+    data = {
+        "message_id": ctx.target_message.id,
+        "message_link": ctx.target_message.jump_url,
+        "author_id": ctx.author.id,
+        "message_channel_id": ctx.channel.id,
+        "marked_date": datetime.datetime.now()
+    }
+
+    if MongoDB[str(ctx.author.id)].find_one({"message_id": ctx.target_message.id}):
+        await ctx.send(embed=Embed(title="이미 메시지가 즐겨찾기에 등록되어 있습니다.", color=Colour.red()), hidden=True)
+
+    else:
+        MongoDB[str(ctx.author.id)].insert_one(data)
+
+        embed = Embed(title="즐겨찾기", description=ctx.target_message.content, color=Colour.gold())
+        embed.set_footer(text=f"즐겨찾기 등록일: {data['marked_date']}")
+
+        await ctx.send(embed=embed, hidden=True)
+
+@slash.slash(name="즐겨찾기_목록",
+            description="등록되어 있는 즐겨찾기를 불러옵니다.")
+async def loadbookmark(ctx: SlashContext):
+    find_doc = list(MongoDB[str(ctx.author.id)].find())
+    embeds = []
+    for doc in range(len(find_doc)):
+        channel = client.get_channel(int(find_doc[doc-1]["message_channel_id"]))
+        message = await channel.fetch_message(int(find_doc[doc-1]["message_id"]))
+        embeds.append(Embed(title="즐겨찾기", description=f"{message.content}\n[**이동하기**]({find_doc[doc-1]['message_link']})", color=Colour.gold()).set_footer(text=f"{ctx.author.name}님의 즐겨찾기 목록", icon_url=ctx.author.avatar_url))
+        # embeds.append(Embed(title="즐겨찾기", description=f"(message.content)\n[**이동하기**]({find_doc[doc-1]['message_link']})", color=Colour.gold()).set_footer(text=f"{ctx.author.name}님의 즐겨찾기 목록", icon_url=ctx.author.avatar_url))
+    if embeds == []:
+        await ctx.send(embed=Embed(title="등록되어 있는 즐겨찾기를 찾을 수 없습니다.", color=Colour.red()), hidden=True)
+    await Paginator(bot=client, ctx=ctx, pages=embeds, hidden=True)
 
 client.run("Token")

@@ -72,10 +72,7 @@ for guild in client.guilds:
     list.append(guild.id)
 guild_ids = guildlist
 
-'''
-action_row = create_actionrow(*buttons)
-await ctx.send("My Message", components=[action_row])
-'''
+
 @client.event
 async def on_message(ctx):
     if ctx.content.startswith("/hellothisisverification"):
@@ -797,7 +794,6 @@ async def help(ctx):
     embed1 = Embed(title="도움말", description="관리 명령어", color=0x0067a3)
     embed10 = Embed(title="도움말", description="즐겨찾기 명령어", color=0x0067a3)
     embed7 = Embed(title="도움말", description="게임 명령어", color=0x0067a3)
-    embed9 = Embed(title="도움말", description="전적 명령어", color=0x0067a3)
     embed2 = Embed(title="도움말", description="정보 명령어", color=0x0067a3)
     embed4 = Embed(title="도움말", description="번역 명령어", color=0x0067a3)
     embed5 = Embed(title="도움말", description="검색 명령어", color=0x0067a3)
@@ -821,8 +817,6 @@ async def help(ctx):
 
     embed7.add_field(name="게임", value="음성 채널에서 게임(활동)을 합니다.\n유튜브 시청, 추리 게임, 낚시 게임, 체스 게임에서 선택할 수 있습니다.\n음성 채널을 선택하지 않으면 오류가 발생합니다.\n(꼭 음성 채널을 선택해주세요!)\n오류는 https://docs.discord-together.ml/docs/errors 를 참고해주세요.\n그 외 오류는 `/건의` 명령어를 사용해주세요.", inline=False)
 
-    embed9.add_field(name="전적_배틀그라운드", value="유저의 배틀그라운드 전적을 알려줍니다.\n유저의 닉네임을 입력하면 유저의 전적을 불러옵니다.", inline=False)
-
     embed2.add_field(name="유저정보", value="유저의 정보를 불러옵니다.\n유저의 닉네임, 아이콘, ID, 디스코드 가입일을 불러옵니다.", inline=False)
     embed2.add_field(name="서버정보", value="이 서버의 정보를 불러옵니다.\n서버의 이름, 아이콘, ID, 생성일, 주인, 멤버 수를 불러옵니다.", inline=False)
     embed2.add_field(name="봇정보", value="Slash_ED봇의 정보를 알려줍니다.\n봇의 닉네임, 아이콘, 소개, 기능, 탄생일, 서버 수, 초대 링크, 개발자를 알려줍니다.", inline=False)
@@ -838,7 +832,7 @@ async def help(ctx):
 
     embed6.add_field(name="건의", value="봇의 버그나 필요한 기능을 건의합니다.\n건의가 관리자에게 전송됩니다.\n버그는 최대 일주일 이내로 고쳐집니다.\n버그가 수정됐거나 필요한 기능이 추가되면 건의자의 DM으로 처리되었다는 메시지가 보내집니다.", inline=False)
 
-    await Paginator(bot=client, ctx=ctx, pages=[embed, embed1, embed10, embed7, embed9, embed2, embed4, embed5, embed8, embed6])
+    await Paginator(bot=client, ctx=ctx, pages=[embed, embed1, embed10, embed7, embed2, embed4, embed5, embed8, embed6])
 
 @slash.slash(name="건의",
             description="봇의 버그나 필요한 기능을 건의합니다.",

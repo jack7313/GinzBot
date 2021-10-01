@@ -996,15 +996,15 @@ async def gameactivity(ctx: SlashContext, 채널: int, 활동: str):
         icon = "https://cdn.discordapp.com/attachments/849872302707441694/870569799116288001/dfdfdsfsasdf.png"
         name = "Chess in the Park"
         desc = "Chess in the Park를 플레이하세요!"
-    elif 활동 == "tile":
+    elif 활동 == "letter-tile":
         icon = "https://cdn.discordapp.com/attachments/849872302707441694/893401950169739274/unknown.png"
         name = "Letter Tile"
         desc = "Letter Tile를 플레이하세요!"
-    elif 활동 == "snack":
+    elif 활동 == "word-snack":
         icon = "https://cdn.discordapp.com/attachments/849872302707441694/893403658484584468/unknown.png"
         name = "Word Snack"
         desc = "Word Snack를 플레이하세요!"
-    elif 활동 == "doodle":
+    elif 활동 == "doodle-crew":
         icon = "https://cdn.discordapp.com/attachments/849872302707441694/893402639180656660/unknown.png"
         name = "Doodle Crew"
         desc = "Doodle Crew를 플레이하세요!"

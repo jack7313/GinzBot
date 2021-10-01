@@ -945,6 +945,7 @@ async def receiverole(ctx, 유저: str, 역할: str):
 
 @slash.slash(name="게임",
             description="음성 채널에서 게임(활동)을 합니다.",
+            guild_ids=guildlist,
             options=[
                 create_option(
                     name="채널",
@@ -968,8 +969,17 @@ async def receiverole(ctx, 유저: str, 역할: str):
                             value="fishing"),
                         create_choice(
                             name="Chess in the Park",
-                            value="chess")])])
-async def gameactivity(ctx, 채널: int, 활동: str):
+                            value="chess"),
+                        create_choice(
+                            name="Letter Tile",
+                            value="letter-tile"),
+                        create_choice(
+                            name="Word Snack",
+                            value="word-snack"),
+                        create_choice(
+                            name="Doodle Crew",
+                            value="doodle-crew"),])])
+async def gameactivity(ctx: SlashContext, 채널: int, 활동: str):
     if 활동 == "youtube":
         icon = "https://cdn.discordapp.com/attachments/849872302707441694/870542147781296158/b099b4395fab6da6.png"
         name = "Youtube Together"
@@ -986,6 +996,18 @@ async def gameactivity(ctx, 채널: int, 활동: str):
         icon = "https://cdn.discordapp.com/attachments/849872302707441694/870569799116288001/dfdfdsfsasdf.png"
         name = "Chess in the Park"
         desc = "Chess in the Park를 플레이하세요!"
+    elif 활동 == "tile":
+        icon = "https://cdn.discordapp.com/attachments/849872302707441694/893401950169739274/unknown.png"
+        name = "Letter Tile"
+        desc = "Letter Tile를 플레이하세요!"
+    elif 활동 == "snack":
+        icon = "https://cdn.discordapp.com/attachments/849872302707441694/893403658484584468/unknown.png"
+        name = "Word Snack"
+        desc = "Word Snack를 플레이하세요!"
+    elif 활동 == "doodle":
+        icon = "https://cdn.discordapp.com/attachments/849872302707441694/893402639180656660/unknown.png"
+        name = "Doodle Crew"
+        desc = "Doodle Crew를 플레이하세요!"
     link = await togetherControl.create_link(채널.id, 활동)
     embed = Embed(title=name, description=f"https://{link.short_link}\n위 링크로 들어가 {desc}", color=0x0067a3)
     embed.set_thumbnail(url=icon)

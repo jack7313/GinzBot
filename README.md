@@ -47,7 +47,7 @@ https://c11.kr/discordbot_ginzbot
 
 - 타이머
 
-<!-- 관리 명령어
+관리 명령어
 --
 - 킥
 
@@ -61,7 +61,7 @@ https://c11.kr/discordbot_ginzbot
 
 - 역할부여
 
-- 역할해제 -->
+- 역할해제
 
 즐겨찾기 명령어
 --

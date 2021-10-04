@@ -553,14 +553,14 @@ async def botinfo(ctx):
     list1 = []
     for i in client.guilds:
         list1.append(i.member_count)
-    embed=discord.Embed(title="Slash_ED봇 정보", colour=0x0067a3)
+    embed=discord.Embed(title="긵봇 정보", colour=0x0067a3)
     embed.set_author(name=edbslash,icon_url=edbslash.avatar_url)
     embed.set_thumbnail(url=edbslash.avatar_url)
-    embed.add_field(name="소개", value="슬래시 커맨드를 ED봇에서!", inline=True)
+    embed.add_field(name="소개", value="긵봇", inline=True)
     embed.add_field(name="기능", value="`/도움말`을 참고해주세요.", inline=True) 
     embed.add_field(name="탄생일", value=f"**{date.year}**년 **{date.month}**월 **{date.day}**일", inline=True)
     embed.add_field(name="가입된 서버 수", value=f"{len(list)}개\n({sum(list1)}명)", inline=True)
-    embed.add_field(name="초대 링크", value="https://c11.kr/n_discordbot_edbslash", inline=True)
+    embed.add_field(name="초대 링크", value="https://c11.kr/discordbot_ginzbot", inline=True)
     embed.add_field(name="개발자", value="긴급재난문자_#1978", inline=True) 
     await ctx.send(embed=embed)
 

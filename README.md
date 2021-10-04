@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://cdn.discordapp.com/avatars/837530519892787270/efd8cdc53a94915f59b576991ac886c1.webp?size=1024" width="40%" height="30%" title="Slash_ED봇" alt="ㅁㄴㅇㄹ">
+<img src="https://cdn.discordapp.com/attachments/849872302707441694/894423441095131196/772d2d15a7b14261.png" width="40%" height="30%" title="긵봇" alt="ㅁㄴㅇㄹ">
 </p>
 
 <p align="center">
@@ -27,7 +27,7 @@
 초대 링크
 ==
 
-https://c11.kr/n_discordbot_edbslash
+https://c11.kr/discordbot_ginzbot
 
 
 개발자
@@ -47,7 +47,7 @@ https://c11.kr/n_discordbot_edbslash
 
 - 타이머
 
-관리 명령어
+<!-- 관리 명령어
 --
 - 킥
 
@@ -61,7 +61,7 @@ https://c11.kr/n_discordbot_edbslash
 
 - 역할부여
 
-- 역할해제
+- 역할해제 -->
 
 즐겨찾기 명령어
 --

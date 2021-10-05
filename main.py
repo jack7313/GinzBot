@@ -816,7 +816,8 @@ async def help(ctx):
     embed10.add_field(name="즐겨찾기_목록", value="즐겨찾기 목록을 확인합니다.")
 
     embed7.add_field(name="게임", value="음성 채널에서 게임(활동)을 합니다.\n유튜브 시청, 추리 게임, 낚시 게임, 체스 게임에서 선택할 수 있습니다.\n음성 채널을 선택하지 않으면 오류가 발생합니다.\n(꼭 음성 채널을 선택해주세요!)\n오류는 https://docs.discord-together.ml/docs/errors 를 참고해주세요.\n그 외 오류는 `/건의` 명령어를 사용해주세요.", inline=False)
-
+    embed7.add_field(name="숫자야구", value="숫자야구를 합니다. [게임 규칙](https://https://namu.wiki/w/%EC%88%AB%EC%9E%90%EC%95%BC%EA%B5%AC#s-2)", inline=False)
+    
     embed2.add_field(name="유저정보", value="유저의 정보를 불러옵니다.\n유저의 닉네임, 아이콘, ID, 디스코드 가입일을 불러옵니다.", inline=False)
     embed2.add_field(name="서버정보", value="이 서버의 정보를 불러옵니다.\n서버의 이름, 아이콘, ID, 생성일, 주인, 멤버 수를 불러옵니다.", inline=False)
     embed2.add_field(name="봇정보", value="Slash_ED봇의 정보를 알려줍니다.\n봇의 닉네임, 아이콘, 소개, 기능, 탄생일, 서버 수, 초대 링크, 개발자를 알려줍니다.", inline=False)

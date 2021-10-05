@@ -1149,5 +1149,161 @@ async def loadbookmark(ctx: SlashContext):
     if embeds == []:
         await ctx.send(embed=Embed(title="등록되어 있는 즐겨찾기를 찾을 수 없습니다.", color=Colour.red()), hidden=True)
     await Paginator(bot=client, ctx=ctx, pages=embeds, hidden=True)
+    
+@slash.slash(name="숫자야구",
+            description="숫자야구 게임을 합니다.",
+            options=[
+                create_option(
+                    name="규칙",
+                    description="규칙을 알고있나요?",
+                    option_type=3,
+                    required=True,
+                    choices=[
+                        create_choice(
+                            name="앎",
+                            value="o"),
+                        create_choice(
+                            name="모름",
+                            value="x")]),])
+async def numBaseballGame(ctx: SlashContext, 규칙: str):
+    if 규칙 == "x":
+        await ctx.send("[게임 규칙](https://namu.wiki/w/%EC%88%AB%EC%9E%90%EC%95%BC%EA%B5%AC#s-2)")
+    else:
+        components = [
+            create_actionrow(
+                create_button(
+                    label='1',
+                    custom_id='1',
+                    style=ButtonStyle.grey),
+                create_button(
+                    label='2',
+                    custom_id='2',
+                    style=ButtonStyle.grey),
+                create_button(
+                    label='3',
+                    custom_id='3',
+                    style=ButtonStyle.grey),),
+            create_actionrow(
+                create_button(
+                    label='4',
+                    custom_id='4',
+                    style=ButtonStyle.grey),
+                create_button(
+                    label='5',
+                    custom_id='5',
+                    style=ButtonStyle.grey),
+                create_button(
+                    label='6',
+                    custom_id='6',
+                    style=ButtonStyle.grey),),
+            create_actionrow(
+                create_button(
+                    label='7',
+                    custom_id='7',
+                    style=ButtonStyle.grey),
+                create_button(
+                    label='8',
+                    custom_id='8',
+                    style=ButtonStyle.grey),
+                create_button(
+                    label='9',
+                    custom_id='9',
+                    style=ButtonStyle.grey)),
+            create_actionrow(
+                create_button(
+                    label='지우기',
+                    custom_id='clear',
+                    style=ButtonStyle.red),
+                create_button(
+                    label='0',
+                    custom_id='0',
+                    style=ButtonStyle.grey),
+                create_button(
+                    label='입력',
+                    custom_id='input',
+                    style=ButtonStyle.green))]
+        baseNum = random.sample(range(0,9),3)
+
+        baseNum = [baseNum[0], baseNum[1], baseNum[2]]
+        print(baseNum)
+
+        embed = discord.Embed(title="숫자야구", color=discord.Colour.green())
+
+        ballNStrike = {}
+
+        num = "\_ \_ _"
+
+        await ctx.send(content="\_ \_ _", embed=embed, components=components)
+        print(num)
+        while True:
+
+            button_context: ComponentContext = await wait_for_component(client, components=components)
+            await button_context.defer(edit_origin=True)
+
+            if button_context.component_id == "clear":
+                num = "\_ \_ _"
+                embed = discord.Embed(title="숫자야구", color=discord.Colour.green())
+                for n, v in ballNStrike.items():
+                    embed.add_field(name=n, value=v)
+                await button_context.edit_origin(content=num)
+
+            if button_context.component_id == "input" and (not "_" in num.split() and not "\_" in num.split()):
+                num = list(map(int, num.split()))
+                ball = 0
+                strike = 0
+
+                print(num)
+
+                if baseNum[0] in num:
+                    if baseNum[0] == num[0]:
+                        strike += 1
+                    else:
+                        ball += 1
+
+                if baseNum[1] in num:
+                    if baseNum[1] == num[1]:
+                        strike += 1
+                    else:
+                        ball += 1
+
+                if baseNum[2] in num:
+                    if baseNum[2] == num[2]:
+                        strike += 1
+                    else:
+                        ball += 1
+
+                if strike == 3:
+                    num = ''.join(list(map(str, num)))
+                    embed = discord.Embed(title="숫자야구", description=f"성공!: {''.join(str(num))}",color=discord.Colour.green())
+                    await button_context.origin_message.edit(content=' '.join(list(map(str, num))), embed=embed)
+                    break
+                else:
+                    embed = discord.Embed(title="숫자야구", color=discord.Colour.green())
+
+                ballNStrike["".join(list(map(str, num)))] = f"{str(ball)}볼 {str(strike)}스트라이크"
+                print(ballNStrike)
+
+                for n, v in ballNStrike.items():
+                    embed.add_field(name=n, value=v)
+
+                await button_context.edit_origin(content="\_ \_ _", embed=embed)
+
+                num = "\_ \_ _"
+
+            if len(button_context.component_id) == 1:
+                embed = discord.Embed(title="숫자야구", color=discord.Colour.green())
+                for n, v in ballNStrike.items():
+                    embed.add_field(name=n, value=v)
+
+                if num == "\_ \_ _":
+                    num = button_context.component_id + " \_ _"
+                elif num[2:] == "\_ _":
+                    num = f"{num[0]} {button_context.component_id} _"
+                elif num[4] == "_":
+                    num = f"{num[:3]} {button_context.component_id}"
+                else:
+                    num = num
+
+                await button_context.edit_origin(content=num)
 
 client.run("Token")

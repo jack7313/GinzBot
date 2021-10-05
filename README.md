@@ -73,6 +73,8 @@ https://c11.kr/discordbot_ginzbot
 --
 - 게임
 
+- 숫자야구
+
 정보 명령어
 --
 - 유저정보

@@ -33,7 +33,7 @@ https://c11.kr/discordbot_ginzbot
 개발자
 ==
 
-긴급재난문자_#1978
+긴재문#1978
 
 
 기능

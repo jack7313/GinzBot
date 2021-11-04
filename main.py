@@ -75,8 +75,6 @@ guild_ids = guildlist
 
 @client.event
 async def on_message(ctx):
-    if ctx.content.startswith("/hellothisisverification"):
-        await ctx.channel.send("긴급재난문자_#1978")
     if ctx.content.startswith("+건의 "):
         if ctx.author.id == 755775043426058340:
             with open('D:\Python_Discord_BOT\Slash_EDB\suggest.json','r', encoding='UTF8') as f:
@@ -93,8 +91,6 @@ async def on_message(ctx):
                 await username1.send(embed=embed)
                 embed = Embed(title="[답장] " + msg1, color=0x008000)
                 await username1.send(embed=embed)
-        else:
-            return None
 
 @slash.slash(name="핑",
             description="봇의 핑을 알려줍니다.")
@@ -140,89 +136,6 @@ async def uptime(ctx):
     bot_uptime = str(datetime.timedelta(seconds=int(round(now_uptime)))).split(":")
     uptime = f"**{bot_uptime[0]}**시간 **{bot_uptime[1]}**분 **{bot_uptime[2]}**초"
     await ctx.send(f"봇이 작동된지 {uptime}가 지났습니다.")
-
-@slash.slash(name="킥",
-            description="유저를 킥합니다.",
-            options=[
-                create_option(
-                    name="유저",
-                    description="킥할 유저를 선택하세요.",
-                    option_type=6,
-                    required=True),
-                create_option(
-                    name="사유",
-                    description="킥하는 이유를 입력하세요.",
-                    option_type=3,
-                    required=True)])
-async def kick(ctx, 유저: str, 사유: str):
-    if ctx.author.guild_permissions.manage_guild:
-        embed = Embed(title="킥",description=f"`{사유}`의 이유로 {유저.name}님을 킥했습니다.",colour=0xff0000)
-        await ctx.send(embed=embed)
-        await ctx.guild.kick(유저,reason=사유)
-    else:
-        embed = Embed(title=":warning: 권한 없음",description=f"{ctx.author.name}님은 권한이 없습니다.",colour=0xff0000)
-        await ctx.send(embed=embed, hidden=True)
-
-@slash.slash(name="밴",
-            description="유저를 밴합니다.",
-            options=[
-                create_option(
-                    name="유저",
-                    description="밴할 유저를 선택하세요.",
-                    option_type=6,
-                    required=True),
-                create_option(
-                    name="사유",
-                    description="밴하는 이유를 입력하세요.",
-                    option_type=3,
-                    required=True)])
-async def ban(ctx, 유저: str, 사유: str):
-    if ctx.author.guild_permissions.manage_guild:
-        embed = Embed(title="밴",description=f"`{사유}`의 이유로 {유저.name}님을 밴했습니다.",colour=0xff0000)
-        await ctx.send(embed=embed)
-        await ctx.guild.ban(유저,reason=사유)
-    else:
-        embed = Embed(title=":warning: 권한 없음",description=f"{ctx.author.name}님은 권한이 없습니다.",colour=0xff0000)
-        await ctx.send(embed=embed, hidden=True)
-
-@slash.slash(name="뮤트",
-            description="유저를 뮤트합니다.",
-            options=[
-                create_option(
-                    name="유저",
-                    description="뮤트할 유저를 선택하세요.",
-                    option_type=6,
-                    required=True),
-                create_option(
-                    name="사유",
-                    description="뮤트하는 이유를 입력하세요.",
-                    option_type=3,
-                    required=True)])
-async def mute(ctx, 유저: str, 사유: str):
-    if ctx.author.guild_permissions.manage_channels:
-        embed = Embed(title=f"`{사유}`의 이유로 {유저.name}님을 뮤트했습니다.",colour=0xff0000)
-        await ctx.send(embed=embed)
-        await ctx.channel.set_permissions(유저, send_messages=False)
-    else:
-        embed = Embed(title=f"{ctx.author.name}님은 권한이 없습니다.",colour=0xff0000)
-        await ctx.send(embed=embed, hidden=True)
-
-@slash.slash(name="언뮤트",
-            description="유저를 언뮤트합니다.",
-            options=[
-                create_option(
-                    name="유저",
-                    description="언뮤트할 유저를 선택하세요.",
-                    option_type=6,
-                    required=True)])
-async def unmute(ctx, 유저: str):
-    if ctx.author.guild_permissions.manage_channels:
-        embed = Embed(title=f"{유저.name}님의 뮤트를 해제했습니다.",colour=0xff0000)
-        await ctx.send(embed=embed)
-        await ctx.channel.set_permissions(유저, send_messages=None)
-    else:
-        embed = Embed(title=f"{ctx.author.name}님은 권한이 없습니다.",colour=0xff0000)
-        await ctx.send(embed=embed, hidden=True)
 
 @slash.slash(name="번역",
             description="번역할 내용을 번역합니다.",
@@ -791,7 +704,6 @@ async def tenorgif(ctx, 내용: str):
             description="Slash_ED봇의 도움말입니다.")
 async def help(ctx):
     embed = Embed(title="도움말", description="기본 명령어", color=0x0067a3)
-    embed1 = Embed(title="도움말", description="관리 명령어", color=0x0067a3)
     embed10 = Embed(title="도움말", description="즐겨찾기 명령어", color=0x0067a3)
     embed7 = Embed(title="도움말", description="게임 명령어", color=0x0067a3)
     embed2 = Embed(title="도움말", description="정보 명령어", color=0x0067a3)
@@ -803,14 +715,6 @@ async def help(ctx):
     embed.add_field(name="핑", value="봇의 핑을 알려줍니다.", inline=False)
     embed.add_field(name="업타임", value="봇이 작동된 시간을 알려줍니다.")
     embed.add_field(name="타이머", value="타이머를 잽니다.\n중간에 봇이 꺼지면 타이머가 취소됩니다.", inline=False)
-
-    embed1.add_field(name="킥", value="유저를 킥합니다.\n이때 킥된 유저는 다시 서버에 들어올 수 있습니다.", inline=False)
-    embed1.add_field(name="밴", value="유저를 밴합니다.\n이때 밴된 유저는 관리자가 차단 목록에서 빼지 않는 이상 다시 들어올 수 없습니다.", inline=False)
-    embed1.add_field(name="뮤트", value="유저를 뮤트합니다.\n`/언뮤트` 명령어 유저를 언뮤트할 수 있습니다.", inline=False)
-    embed1.add_field(name="언뮤트", value="유저를 언뮤트합니다.\n`/뮤트` 명령어로 다시 유저를 뮤트할 수 있습니다.", inline=False)
-    embed1.add_field(name="삭제", value="메시지를 삭제합니다.\n입력한 개수만큼 메시지가 삭제됩니다.", inline=False)
-    embed1.add_field(name="역할부여", value="유저에게 역할을 부여합니다.\n`/역할해제` 명령어로 다시 해제할 수 있습니다.", inline=False)
-    embed1.add_field(name="역할해제", value="유저의 역할을 해제합니다.\n`/역할부여` 명령어로 다시 역할을 부여할 수 있습니다.", inline=False)
 
     embed10.add_field(name="즐겨찾기 (컨텍스트 메뉴)", value="메시지를 즐겨찾기 목록에 추가합니다.\n`/즐겨찾기_목록` 명령어로 즐겨찾기 목록을 확인할 수 있습니다.", inline=False)
     embed10.add_field(name="즐겨찾기_목록", value="즐겨찾기 목록을 확인합니다.")
@@ -833,7 +737,7 @@ async def help(ctx):
 
     embed6.add_field(name="건의", value="봇의 버그나 필요한 기능을 건의합니다.\n건의가 관리자에게 전송됩니다.\n버그는 최대 일주일 이내로 고쳐집니다.\n버그가 수정됐거나 필요한 기능이 추가되면 건의자의 DM으로 처리되었다는 메시지가 보내집니다.", inline=False)
 
-    await Paginator(bot=client, ctx=ctx, pages=[embed, embed1, embed10, embed7, embed2, embed4, embed5, embed8, embed6])
+    await Paginator(bot=client, ctx=ctx, pages=[embed, embed10, embed7, embed2, embed4, embed5, embed8, embed6])
 
 @slash.slash(name="건의",
             description="봇의 버그나 필요한 기능을 건의합니다.",
@@ -882,67 +786,6 @@ async def suggest(ctx, 종류: str, 내용: str):
             embed = Embed(title=type, description=내용, color=0x0067a3)
             embed.set_footer(text=f"{ctx.author.name}님의 건의", icon_url=ctx.author.avatar_url)
             await edm.send(embed=embed)
-            
-@slash.slash(name="삭제",
-            description="메시지를 삭제합니다.",
-            options=[
-                create_option(
-                    name="개수",
-                    description="삭제할 메시지의 개수를 입력하세요.",
-                    option_type=4,
-                    required=True)])
-async def clear(ctx, 개수: int):
-    if ctx.author.guild_permissions.manage_channels:
-        await ctx.channel.purge(limit=개수)
-        embed = Embed(title=f"{개수}개의 메시지를 삭제했습니다.",colour=0xff0000)
-        await ctx.send(embed=embed)
-    else:
-        embed = Embed(title=f"{ctx.author.name}님은 권한이 없습니다.",colour=0xff0000)
-        await ctx.send(embed=embed, hidden=True)
-        
-@slash.slash(name="역할부여",
-            description="유저에게 역할을 부여합니다.",
-            options=[
-                create_option(
-                    name="유저",
-                    description="역할을 부여할 유저를 선택하세요.",
-                    option_type=6,
-                    required=True),
-                create_option(
-                    name="역할",
-                    description="유저에게 부여할 역할을 선택하세요.",
-                    option_type=8,
-                    required=True)])
-async def giverole(ctx, 유저: str, 역할: str):
-    if ctx.author.guild_permissions.manage_guild:
-        embed = Embed(title=f"{유저.name}님에게 `{역할.name}` 역할을 부여했습니다.", colour=0x008000)
-        await ctx.send(embed=embed)
-        await 유저.add_roles(역할)
-    else:
-        embed = Embed(title=f"{ctx.author.name}님은 권한이 없습니다.",colour=0xff0000)
-        await ctx.send(embed=embed, hidden=True)
-
-@slash.slash(name="역할해제",
-            description="유저의 역할을 해제합니다.",
-            options=[
-                create_option(
-                    name="유저",
-                    description="역할을 해제할 유저를 선택하세요.",
-                    option_type=6,
-                    required=True),
-                create_option(
-                    name="역할",
-                    description="유저에게 해제할 역할을 선택하세요.",
-                    option_type=8,
-                    required=True)])
-async def receiverole(ctx, 유저: str, 역할: str):
-    if ctx.author.guild_permissions.manage_guild:
-        embed = Embed(title=f"{유저.name}님의 `{역할.name}` 역할을 해제했습니다.", colour=0x008000)
-        await ctx.send(embed=embed)
-        await 유저.remove_roles(역할)
-    else:
-        embed = Embed(title=f"{ctx.author.name}님은 권한이 없습니다.",colour=0xff0000)
-        await ctx.send(embed=embed, hidden=True)
 
 @slash.slash(name="게임",
             description="음성 채널에서 게임(활동)을 합니다.",
@@ -1066,55 +909,6 @@ async def readqr(ctx, 주소: str):
     else:
         await ctx.send(embed=Embed(title="잘못된 이미지 주소입니다.", color=0xff0000), hidden=True)
 
-@slash.slash(name="전적_배틀그라운드",
-            description="유저의 배틀그라운드 전적을 알려줍니다.",
-            options=[
-                create_option(
-                    name="닉네임",
-                    description="유저의 닉네임을 입력하세요.",
-                    option_type=3,
-                    required=True),
-                create_option(
-                    name="플렛폼",
-                    description="유저의 플렛폼을 선택하세요.",
-                    option_type=3,
-                    required=True,
-                    choices=[
-                        create_choice(
-                            name="Steam",
-                            value="0"),
-                        create_choice(
-                            name="Kakao",
-                            value="1"),
-                        create_choice(
-                            name="XBox",
-                            value="2"),
-                        create_choice(
-                            name="PlayStation",
-                            value="3"),
-                        create_choice(
-                            name="Stadia",
-                            value='4')]),
-                create_option(
-                    name="매치_종류",
-                    description="매치의 종류를 선택하세요.",
-                    option_type=3,
-                    required=True,
-                    choices=[
-                        create_choice(
-                            name="일반전",
-                            value="normal"),
-                        create_choice(
-                            name="경쟁전",
-                            value="ranked")])])
-async def pubginfo(ctx, 닉네임: str, 플렛폼: str, 매치_종류: str):
-    await ctx.defer()
-    pubglist = await pubg(닉네임, int(플렛폼), 매치_종류)
-    if str(type(pubglist)) == "<class 'list'>":
-        await Paginator(bot=client, ctx=ctx, pages=pubglist)
-    else:
-        await ctx.send(embed=pubglist, hidden=True)
-        
 @slash.context_menu(name="즐겨찾기",
                     target=ContextMenuType.MESSAGE)
 async def bookmark(ctx: MenuContext):
